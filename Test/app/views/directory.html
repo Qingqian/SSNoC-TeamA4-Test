@@ -1,0 +1,42 @@
+<!-- Directory -->
+<div id="contentWrap">
+	<div class="col-md-3" id="users">hbwef</div>
+</div>
+
+<form class="form-group" id="menu">
+	<input type="submit"  class="btn btn-info btn-block" value="MENU"></input>
+</form>
+
+<script>
+jQuery(function($) {
+	var $users = $('#users');
+
+	// Return to Menu
+	$("#menu").submit(function(e) {
+		e.preventDefault();
+		$("#FRAME").load("menu.html");
+	});
+	
+	// Send directory request
+	socket.emit("directory");
+	
+	// Read user array
+	socket.on('citizens', function(data){
+		var content ='';
+		var online = data.online;
+		var offline = data.offline;
+		online = sortArraybByKey(online,'username');
+		offline = sortArraybByKey(offline,'username');
+		content += "<b>Online users:</b><br>";
+		for(i=0;i<online.length;i++) {
+			content += online[i].username +"</br>";
+		}
+		content += "<b>Offline users:</b><br>";
+		for(i=0;i<offline.length;i++) {
+			content += offline[i].username +"<br>";
+		}
+		$users.html(content);
+	});
+
+});
+</script>

@@ -1,0 +1,53 @@
+<!-- Username Login -->
+<div class="col-md-4" id="usernameWrap">
+<h3> Register New User</h3>
+<p id="error"></p>
+<form class="form-group" id="usernameForm" action="/signup" method="POST">
+	<input type="text" size ="50" name="username" id="username" class="form-control" placeholder="Username"></input><br>
+	<input type="password" size="50" name="password" id="password" class="form-control" placeholder="Password"/><br>
+	<input type="password" size="50" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password"/><br>
+	<input type="submit" value="REGISTER" class="btn btn-primary btn-block"></input>
+</form>
+</div>
+
+<script>
+jQuery(function($) {
+	var $usernameForm = $('#usernameForm');
+	var $username = $('#username');
+	var $password = $('#password');
+	var $confirmPassword = $('#confirm-password');
+
+	$usernameForm.submit(function(e){
+		e.preventDefault();
+		if($username.val().length <3) {
+			$('#error').html('Username is too short. Please set the username at least 3 characters.');
+			$username.val('');
+			$password.val('');
+			$confirmPassword.val('');
+		} else if($password.val().length <4 || $confirmPassword.val().length <4) {
+			$('#error').html('Passwords are too short. Please set the password at least 4 characters.');
+			$password.val('');
+			$confirmPassword.val('');
+		} else if($password.val() != $confirmPassword.val()) {
+			$('#error').html('Passwords are not the same. Please try again.');
+			$password.val('');
+			$confirmPassword.val('');
+		} else {
+			socket.emit('new user', {username:$username.val(), password:$password.val()}, function(data){
+				if(data === 0) {
+					$("#FRAME").load("menu.html");
+				} else if(data === 1){
+					$('#error').html('Username exists but password is incorrect. Try another username.')
+				} else if(data === 2) {
+					$('#error').html('Username is reservered. Please pick up another one.');
+				} else {
+					$("#FRAME").load("menu.html");
+				}
+			});
+			$username.val('');
+			$password.val('');
+			$confirmPassword.val('');
+		}
+	});
+});
+</script>

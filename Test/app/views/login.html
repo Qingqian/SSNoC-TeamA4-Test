@@ -1,0 +1,56 @@
+<!-- Username Login -->
+<div class="col-md-4" id="usernameWrap">
+<h3> Enter the chatroom with username</h3>
+<p id="error"></p>
+<form class="form-group" id="usernameForm">
+	<input type="text" size ="50" id="username" class="form-control" placeholder="Username"></input><br>
+	<input type="password" size="50" id="password" class="form-control" placeholder="Password"/></input><br>
+	<input type="submit" value="LOGIN" class="btn btn-primary btn-block"></input>
+</form>
+
+<form class="form-group" id="newUser">
+	<input type="submit"  class="btn btn-danger btn-block" value="REGISTER"></input>
+</form>
+
+</div>
+
+<script>
+jQuery(function($) {
+	var $usernameForm = $('#usernameForm');
+	var $username = $('#username');
+	var $password = $('#password');
+
+	// Redirect for new users
+	$("#newUser").submit(function(e) {
+		e.preventDefault();
+		$("#FRAME").load("new_user.html");
+	});
+	
+	// Handle Login
+	$usernameForm.submit(function(e){
+		e.preventDefault();
+		if($username.val().length < 3) {
+			$('#error').html('Username is too short. Please set the username at least 3 characters.');
+			$username.val('');
+			$password.val('');
+		} else if($password.val().length < 4) {
+			$('#error').html('Passwords are too short. Please set the password at least 4 characters.');
+			$password.val('');
+		} else {
+			socket.emit('login', {username:$username.val(), password:$password.val()}, function(data){
+				if(data === 0) {
+					// Correct Login - Load Menu Application
+					$("#FRAME").load("menu.html"); 
+				} else if(data === 2){
+					$('#error').html('Incorrect Username or Password')
+				} else {
+					// Correct Login - Load Menu Application
+					$("#FRAME").load("menu.html"); 
+				}
+			});
+			$username.val('');
+			$password.val('');
+		}
+	});
+});
+</script>
