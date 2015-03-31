@@ -102,8 +102,3 @@ User.getAllUsers = function(callback) {
 }
 
 module.exports = User;
-
-
-
-
-
