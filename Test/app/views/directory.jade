@@ -1,0 +1,22 @@
+extends layout
+
+append jscripts
+	script(src="../../js/directory.js")
+
+block content
+	include navigationbar.jade
+
+	div.container.text-center
+		h3 SSNoC directory
+		br
+		div.row
+			div.col-md-12.col-xs-12.col-lg-12
+				div.col-md-6.col-xs-6.col-lg-6
+					h4 Online users
+					//- for online_user in online_usernames
+					//- 	p #{online_user}
+					
+				div.col-md-6.col-xs-6.col-lg-6
+					h4 Offline users
+					
+

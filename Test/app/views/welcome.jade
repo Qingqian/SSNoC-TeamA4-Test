@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	include navigationbar.jade
+	div.container.text-center
+		br
+		h3 Welcome to Survivable Social Network on a Chip System
+		br
+
+		div.row
+			div.col-md-12.col-xs-12
+				h4.text-center Here is a brief explaination of the various statuses in the system
+				br
+				br
+				div.row.text-center
+					div.col-xs-3.col-sm-2.col-md-1.col-lg-1
+						img(src="/imgs/status_ok.png" height=10)
+					div.col-xs-8.col-sm-9.col-md-10.col-lg-10
+						h5.text-left I am OK, I do not need help.
+				br
+				div.row 
+					div.col-xs-3.col-sm-2.col-md-1.col-lg-1
+						img(src="/imgs/status_help.png" height=10)
+					div.col-xs-8.col-sm-9.col-md-10.col-lg-10
+						h5.text-left I need help, but this is not a life threatening emergency.
+				br
+				div.row 
+					div.col-xs-3.col-sm-2.col-md-1.col-lg-1
+						img(src="/imgs/status_emergency.png" height=10)
+					div.col-xs-8.col-sm-9.col-md-10.col-lg-10
+						h5.text-left I need help now, as this is a life threatening emergency
+				br
+				br
+				div.row
+					div.col
+						h4.text-center Sharing your status by clicking share status on navigation bar
+				br
+				div.row
+					a.btn.btn-lg.btn-success(href='/directory') Directory List    

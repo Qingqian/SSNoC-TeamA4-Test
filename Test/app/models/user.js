@@ -8,10 +8,16 @@ var db_file = 'chat_database.db';
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(db_file);
 
+var exists = fs.existsSync(db_file);
+if (!exists) {
+    console.log("Creating DB file.");
+    fs.openSync(db_file, 'w');
+}
 
-function User(username, password) {
+function User(username, password, user_status) {
 	this.username = username;
 	this.password = password;
+	this.user_status = user_status;
 }
 
 User.prototype.generateHash = function(password) {
@@ -27,50 +33,72 @@ User.prototype.isValidPassword = function(password, callback) {
 	}
 };
 
+function checkTableExists(callback) {
+	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT)", function(){
+		callback(true);
+		return;
+	});
+	callback(false);
+}
+
 User.saveNewUser = function(username, password, callback) {
-	var newUser = new User(username, password);
+	var newUser = new User(username, password, undefined);
 	var token = newUser.generateHash(password);
 	newUser.token = token;
-	db.serialize(function(){
-		db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT)");
-		var setUser = db.prepare("INSERT INTO user_info VALUES (?, ?)");
-		setUser.run(username, token, function(err){
-			if (err)
-				console.log(err);
-		});
-		setUser.finalize();
+	var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?)");
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			setUser_stmt.run(username, token, undefined, function(err){
+				if (err)
+					console.log(err);
+			});
+			setUser_stmt.finalize();
+		}
 	});
 	callback(null, newUser);
 };
 
 User.getUser = function(username, callback) {
 	var query = "SELECT * FROM user_info WHERE username=\"" + username + "\"";
-	db.get(query, function(err, row){
-		if (err){
-			callback(err,null);
-			return;
-		} else{
-			console.log(row);
-			var user = new User(row.username, row.password);
-			callback(null, user);
-			return;
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.get(query, function(err, row){
+				if (err){
+					callback(err,null);
+					return;
+				} else if(!row){
+					callback(null,null);
+				} else{
+					var user = new User(row.username, row.password, row.user_status);
+					callback(null, user);
+					return;
+				}
+			});
 		}
-	});
+	});	
 };
 
 User.getAllUsers = function(callback) {
 	var query = "SELECT * FROM user_info";
 	var users =[];
-	db.each(query, function(err, row){
-		if(err) {
-			callback(err,null);
-			return;
-		} else {
-			var user = new User(row.username, row.password);
-			users.push(user);
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err, row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var user = new User(row.username, row.password, row.user_status);
+					users.push(user);
+				}
+			}, function(err,complete){
+				if(err) 
+					callback(err,null);
+				console.log(users);
+				callback(null, users);
+			});
 		}
 	});
-	callback(null, users);
 }
 
 module.exports = User;

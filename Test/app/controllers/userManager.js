@@ -17,6 +17,23 @@ module.exports = function(_) {
 
 		postWelcomeMessage: function(req, res) {
 			res.render('welcome');
+		},
+
+		getUser : function(req,res) {
+			var username = req.session.passport.user.username;
+			User.getUser(username, function(err,user){
+				if(user) {
+					User.getAllUsers(function(err, users){
+						if(users) {
+							res.json({current_user: user, total_users: users});
+						}
+					});
+				}
+			});
+		},
+
+		getDirectory : function(req,res) {
+			res.render('directory');
 		}
 
 	};
