@@ -4,11 +4,13 @@ var session_id = "";
 client_socket.on("connect", function(){
 	session_id = client_socket.id;
 	$.ajax({
-		url: '/user_socket',
+		url: '/users',
 		type: 'GET',
 		dataType: 'json'
 	}).done(function(data){
 		client_socket.emit('new user', {session_id: session_id, current_user: data.current_user, total_users: data.total_users});
+	}).fail(function(){
+		console.log('error on getting all users in the system');
 	});
 });
 

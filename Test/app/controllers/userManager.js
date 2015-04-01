@@ -19,7 +19,7 @@ module.exports = function(_) {
 			res.render('welcome');
 		},
 
-		getUser : function(req,res) {
+		getAllUser : function(req,res) {
 			var username = req.session.passport.user.username;
 			User.getUser(username, function(err,user){
 				if(user) {
@@ -28,6 +28,15 @@ module.exports = function(_) {
 							res.json({current_user: user, total_users: users});
 						}
 					});
+				}
+			});
+		},
+
+		getUser : function(req,res) {
+			var username = req.session.passport.user.username;
+			User.getUser(username, function(err,user){
+				if(user) {
+					res.json({user:user});
 				}
 			});
 		},

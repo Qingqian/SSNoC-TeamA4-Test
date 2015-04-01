@@ -1,8 +1,5 @@
 extends layout
 
-append jscripts
-	script(src="../../js/directory.js")
-
 block content
 	include navigationbar.jade
 
@@ -20,5 +17,8 @@ block content
 					.colorgraph
 					h4 Offline users
 					div#offline_users
+
+append footer
+	script(src="../../js/directory.js")
 					
 
