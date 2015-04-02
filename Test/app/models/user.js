@@ -49,11 +49,18 @@ User.saveNewUser = function(username, password, callback) {
 	var newUser = new User(username, password, undefined);
 	var token = newUser.generateHash(password);
 	newUser.token = token;
+	var currentdate = new Date();
+	var datetime = currentdate.getDate() + "/"
+				+ (currentdate.getMonth()+1)  + "/" 
+				+ currentdate.getFullYear() + " @ "  
+				+ currentdate.getHours() + ":"  
+				+ currentdate.getMinutes() + ":" 
+				+ currentdate.getSeconds();
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
 			db.serialize(function(){
 				var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?, ?)");
-				setUser_stmt.run(username, token, undefined, undefined, function(err){
+				setUser_stmt.run(username, token, undefined, datetime, function(err){
 					if (err) {
 						callback(err,null);
 						return;
