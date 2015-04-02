@@ -29,6 +29,9 @@ module.exports = function(app, _, io, passport,citizens){
 	app.get('/public-wall', checkLogIn, messageManager.getPublicChatPage);
 	app.get('/get-public-messages', checkLogIn, messageManager.getPublicMessages);
 	app.post('/post-public-message', checkLogIn, messageManager.postPublicMessage);
+	/********************* Share Status *********************/
+	app.get('/share-status', checkLogIn, userManager.getStatus);
+	app.post('/share-status', checkLogIn, userManager.changeStatus);
 
 	/******************* routes end ****************/
 	function checkLogIn(req, res, next) {

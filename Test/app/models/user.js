@@ -14,10 +14,11 @@ if (!exists) {
     fs.openSync(db_file, 'w');
 }
 
-function User(username, password, user_status) {
+function User(username, password, user_status, change_status_time) {
 	this.username = username;
 	this.password = password;
 	this.user_status = user_status;
+	this.change_status_time = change_status_time;
 }
 
 User.prototype.generateHash = function(password) {
@@ -34,7 +35,7 @@ User.prototype.isValidPassword = function(password, callback) {
 };
 
 function checkTableExists(callback) {
-	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT)", function(err){
+	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT)", function(err){
 		if(err) {
 			callback(false);
 			return;
@@ -50,15 +51,17 @@ User.saveNewUser = function(username, password, callback) {
 	newUser.token = token;
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
-			var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?)");
-			setUser_stmt.run(username, token, undefined, function(err){
-				if (err) {
-					callback(err,null);
-					return;
-				} else {
-					callback(null, newUser);
-				}	
-				setUser_stmt.finalize();
+			db.serialize(function(){
+				var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?, ?)");
+				setUser_stmt.run(username, token, undefined, undefined, function(err){
+					if (err) {
+						callback(err,null);
+						return;
+					} else {
+						callback(null, newUser);
+					}	
+					setUser_stmt.finalize();
+				});
 			});
 		}
 	});
@@ -76,7 +79,7 @@ User.getUser = function(username, callback) {
 					callback(null,null);
 					return;
 				} else{
-					var user = new User(row.username, row.password, row.user_status);
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
 					callback(null, user);
 				}
 			});
@@ -94,7 +97,7 @@ User.getAllUsers = function(callback) {
 					callback(err,null);
 					return;
 				} else {
-					var user = new User(row.username, row.password, row.user_status);
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
 					users.push(user);
 				}
 			}, function(err,complete){
@@ -104,6 +107,27 @@ User.getAllUsers = function(callback) {
 				} else {
 					callback(null, users);
 				}
+			});
+		}
+	});
+}
+
+User.changeStatus = function(username, user_status, change_status_time, callback) {
+	var query = "UPDATE user_info SET user_status = ?, change_status_time = ? WHERE username = \"" + username + "\"";
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.serialize(function(){
+				var status_stmt = db.prepare(query);
+				status_stmt.run(user_status, change_status_time, function(err){
+					if(err) {
+						callback(err,null);
+						return;
+					} else {
+						var new_status = {username:username, user_status:user_status, change_status_time:change_status_time};
+						callback(null,new_status);
+					}
+					status_stmt.finalize();
+				});
 			});
 		}
 	});

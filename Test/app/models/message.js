@@ -86,16 +86,18 @@ Message.getPrivateMessages = function(source_user, target_user, callback) {
 Message.postPublicMessage = function(source_user, message_text, post_time, callback) {
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
-			var public_stmt = db.prepare("INSERT INTO message VALUES (?, ?, ?, ?, ?)"); 
-			public_stmt.run(source_user, message_text, post_time, 'WALL', 'PUBLIC', function(err){
-				if (err) {
-					callback(err,null);
-					return;
-				} else {
-					var public_message = new Message(source_user, message_text, post_time, 'WALL', 'PUBLIC');
-					callback(null, public_message);
-				}
-				public_stmt.finalize();
+			db.serialize(function(){
+				var public_stmt = db.prepare("INSERT INTO message VALUES (?, ?, ?, ?, ?)"); 
+				public_stmt.run(source_user, message_text, post_time, 'WALL', 'PUBLIC', function(err){
+					if (err) {
+						callback(err,null);
+						return;
+					} else {
+						var public_message = new Message(source_user, message_text, post_time, 'WALL', 'PUBLIC');
+						callback(null, public_message);
+					}
+					public_stmt.finalize();
+				});
 			});
 		}
 	});
@@ -106,15 +108,17 @@ Message.postPrivateMessage = function(source_user, message_text, post_time, targ
 	var private_message = new Message(source_user, message_text, post_time, target_user, 'PRIVATE');
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
-			private_stmt.run(source_user, message_text, post_time, target_user, 'PRIVATE', function(err){
-				if(err) {
-					callback(err, null);
-					return;
-				} else {
-					callback(null,private_message);
-				}
+			db.serialize(function(){
+				private_stmt.run(source_user, message_text, post_time, target_user, 'PRIVATE', function(err){
+					if(err) {
+						callback(err, null);
+						return;
+					} else {
+						callback(null,private_message);
+					}
+					private_stmt.finalize();
+				});
 			});
-			private_stmt.finalize();
 		}
 	});
 }
