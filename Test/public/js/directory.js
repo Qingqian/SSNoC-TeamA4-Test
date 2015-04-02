@@ -99,14 +99,18 @@ function updateDirectory(citizens) {
 
 function getStatus(user_status) {
 	var status="Show status";
+	console.log(user_status);
 		switch(user_status) {
 			case 'HELP': 
 				status = '<br><img class="img-circle" src="../imgs/status_help.png" height=20/> Need Help!';
+				break;
 			case 'EMERGENCY':
 				status = '<br><img class="img-circle" src="../imgs/status_emergency.png" height=20/> Emergency!';
+				break;
 			default:
 				status = '<br><img class="img-circle" src="../imgs/status_ok.png" height=20/> I am OK!';
 		}
+
 	return status;
 } 
 
