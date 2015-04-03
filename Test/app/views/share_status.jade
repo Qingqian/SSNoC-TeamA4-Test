@@ -1,0 +1,53 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		if err_message != null
+			div.alert.alert-danger.alert-dismissible(role="alert")
+				button.close(type="button" data-dismiss="alert" aria-label="Close") 
+					span(aria=hidde="true") &times;
+				strong #{err_message}
+		if success_message != null
+			div.alert.alert-success(role="alert")
+				button.close(type="button" data-dismiss="alert" aria-label="Close") 
+					span(aria=hidde="true") &times; 
+				p #{success_message}
+
+		br
+		div.row
+			div.col-xs-3.col-sm-2.col-md-1.col-lg-1
+				img(src="../../imgs/online.png" height =10)
+				br
+				img(src="../../imgs/profile_image.png" height = 50)
+			div.col-xs-8.col-sm-9.col-md-10.col-lg-10
+				strong #{user_info.username}
+				br
+				if user_info.user_status == 'HELP'
+					img.img-circle(src="../../imgs/status_help.png" height=20)
+					strong Need Help. No threatening emergency!
+				else if user_info.user_status == 'EMERGENCY'
+					img.img-circle(src="../../imgs/status_emergency.png" height=20)
+					strong Threatening emergency!!
+				else
+					img.img-circle(src="../../imgs/status_ok.png" height=20)
+					strong I am OK!
+				br
+				p Posted Time: #{user_info.change_status_time}         
+		hr
+		form#change_status_form
+			div.form-group
+				div.panel.panel-info
+					div.panel-heading 
+						h3.panel-title Change Your Status
+					div.panel-body
+						select.form-control(name="options")#status_options
+							option OK
+							option HELP
+							option EMERGENCY
+						br
+						button.btn.btn-success.form-control(type="submit")#change_status_btn Change Status
+
+append footer
+	script(src="../../js/share_status.js")

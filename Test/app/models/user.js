@@ -14,10 +14,11 @@ if (!exists) {
     fs.openSync(db_file, 'w');
 }
 
-function User(username, password, user_status) {
+function User(username, password, user_status, change_status_time) {
 	this.username = username;
 	this.password = password;
 	this.user_status = user_status;
+	this.change_status_time = change_status_time;
 }
 
 User.prototype.generateHash = function(password) {
@@ -34,28 +35,43 @@ User.prototype.isValidPassword = function(password, callback) {
 };
 
 function checkTableExists(callback) {
-	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT)", function(){
-		callback(true);
-		return;
+	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT)", function(err){
+		if(err) {
+			callback(false);
+			return;
+		} else {
+			callback(true);
+		}
 	});
-	callback(false);
 }
 
 User.saveNewUser = function(username, password, callback) {
 	var newUser = new User(username, password, undefined);
 	var token = newUser.generateHash(password);
 	newUser.token = token;
-	var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?)");
+	var currentdate = new Date();
+	var datetime = currentdate.getDate() + "/"
+				+ (currentdate.getMonth()+1)  + "/" 
+				+ currentdate.getFullYear() + " @ "  
+				+ currentdate.getHours() + ":"  
+				+ currentdate.getMinutes() + ":" 
+				+ currentdate.getSeconds();
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
-			setUser_stmt.run(username, token, undefined, function(err){
-				if (err)
-					console.log(err);
+			db.serialize(function(){
+				var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?, ?)");
+				setUser_stmt.run(username, token, undefined, datetime, function(err){
+					if (err) {
+						callback(err,null);
+						return;
+					} else {
+						callback(null, newUser);
+					}	
+					setUser_stmt.finalize();
+				});
 			});
-			setUser_stmt.finalize();
 		}
 	});
-	callback(null, newUser);
 };
 
 User.getUser = function(username, callback) {
@@ -68,10 +84,10 @@ User.getUser = function(username, callback) {
 					return;
 				} else if(!row){
 					callback(null,null);
-				} else{
-					var user = new User(row.username, row.password, row.user_status);
-					callback(null, user);
 					return;
+				} else{
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					callback(null, user);
 				}
 			});
 		}
@@ -88,22 +104,40 @@ User.getAllUsers = function(callback) {
 					callback(err,null);
 					return;
 				} else {
-					var user = new User(row.username, row.password, row.user_status);
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
 					users.push(user);
 				}
 			}, function(err,complete){
-				if(err) 
+				if(err) {
 					callback(err,null);
-				console.log(users);
-				callback(null, users);
+					return;
+				} else {
+					callback(null, users);
+				}
+			});
+		}
+	});
+}
+
+User.changeStatus = function(username, user_status, change_status_time, callback) {
+	var query = "UPDATE user_info SET user_status = ?, change_status_time = ? WHERE username = \"" + username + "\"";
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.serialize(function(){
+				var status_stmt = db.prepare(query);
+				status_stmt.run(user_status, change_status_time, function(err){
+					if(err) {
+						callback(err,null);
+						return;
+					} else {
+						var new_status = {username:username, user_status:user_status, change_status_time:change_status_time};
+						callback(null,new_status);
+					}
+					status_stmt.finalize();
+				});
 			});
 		}
 	});
 }
 
 module.exports = User;
-
-
-
-
-

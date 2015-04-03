@@ -28,5 +28,18 @@
 .error {
    color: red;
 }
+.user-row {
+  margin-bottom:5px;
+  /*background-color: #E5E4E2;*/
+}
+                                  
+.dropdown-info {
+  margin-bottom: 20px;
+}
+.dropdown-user {
+  margin: 13px 0;
+  padding: 0px;
+  height: 100%;
+}
 
 
