@@ -8,6 +8,7 @@ client_socket.on('connect', function(){
 		dataType: 'json'
 	}).done(function(data){
 		source_user = data.user.username;
+		client_socket.username = source_user;
 	}).fail(function(){
 		console.log('error on getting current user');
 	});

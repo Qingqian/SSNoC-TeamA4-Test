@@ -20,14 +20,9 @@ module.exports = function(_) {
 		},
 
 		getAllUser : function(req,res) {
-			var username = req.session.passport.user.username;
-			User.getUser(username, function(err,user){
-				if(user) {
-					User.getAllUsers(function(err, users){
-						if(users) {
-							res.json({current_user: user, total_users: users});
-						}
-					});
+			User.getAllUsers(function(err, users){
+				if(users) {
+					res.json({total_users: users});
 				}
 			});
 		},
@@ -51,9 +46,9 @@ module.exports = function(_) {
 			var change_status_time = req.body.change_status_time;
 			User.changeStatus(username, user_status, change_status_time, function(err, data){
 				if(err) {
-					res.render('share_status', {err_message: 'Error on changing user status', success_message : null});
+					res.json({err_message: 'Error on changing user status', success_message : null});
 				} else {
-					res.render('share_status',{err_message: null, success_message: 'Success on updating user status', user_info: data});
+					res.json({err_message: null, success_message: 'Success on updating user status', user_info: data});
 				}
 			});
 		},
@@ -62,11 +57,15 @@ module.exports = function(_) {
 			var username = req.session.passport.user.username;
 			User.getUser(username,function(err,user){
 				if(err) {
-					res.render('share_status',{err_message:'Error on getting user current status', success_message : null});
+					res.json({err_message:'Error on getting user current status', success_message : null});
 				} else {
-					res.render('share_status', {err_message: null, success_message: 'Success on getting user current status', user_info:user});
+					res.json({err_message: null, success_message: 'Success on getting user current status', user_info:user});
 				}
 			});
+		},
+
+		getStatusPage : function(req,res) {
+			res.render('share_status');
 		}
 
 	};

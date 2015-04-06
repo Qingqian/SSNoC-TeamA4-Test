@@ -1,9 +1,9 @@
-module.exports = function(app, _, io, passport,citizens){
-	/******************* Controller initialization start ****************/
+module.exports = function(app, _, io, passport, online_users){
+	/******************* Controllers initialization start ****************/
 	var userManager = require('./controllers/userManager')(_);
 	var messageManager = require('./controllers/messageManager')(_);
-	
-	/******************* Controller initialization end ****************/
+	var announcementManager = require('./controllers/announcementManager')(_);
+	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
 	app.get('/', userManager.getLogin);
@@ -30,8 +30,14 @@ module.exports = function(app, _, io, passport,citizens){
 	app.get('/get-public-messages', checkLogIn, messageManager.getPublicMessages);
 	app.post('/post-public-message', checkLogIn, messageManager.postPublicMessage);
 	/********************* Share Status *********************/
-	app.get('/share-status', checkLogIn, userManager.getStatus);
+	app.get('/share-status',checkLogIn, userManager.getStatusPage);
+	app.get('/status', checkLogIn, userManager.getStatus);
 	app.post('/share-status', checkLogIn, userManager.changeStatus);
+	/********************* Post Announcement *********************/
+	app.get('/announcement', checkLogIn, announcementManager.getAnnouncementPage);
+	app.get('/all-announcements', checkLogIn, announcementManager.getAllAnnouncements);
+	app.post('/announcement', checkLogIn, announcementManager.postAnnouncement);
+
 
 	/******************* routes end ****************/
 	function checkLogIn(req, res, next) {
