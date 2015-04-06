@@ -101,6 +101,22 @@ function updateDirectory(online_users) {
     		}
     	});
     });
+
+    //start private chat
+    $('button').click(function(){
+    	var target_user = $(this).attr('name');
+    	console.log(target_user);
+    	if(target_user) {
+    		var form = $("<form method='post', action='/private-chat'></form>");
+        	var input_target = $("<input type='hidden', name='target_user'>");
+	        var input_source = $("<input type='hidden', name='source_user'>");
+	        input_target.val(target_user);
+	        input_source.val(current_username);
+	        form.append(input_target);
+	        form.append(input_source);
+	        form.submit();
+    	}
+    });
 }
 
 function getStatus(user_status) {

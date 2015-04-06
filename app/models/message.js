@@ -57,8 +57,6 @@ Message.getPublicMessages = function(callback) {
 }
 
 Message.getPrivateMessages = function(source_user, target_user, callback) {
-	// var source = JSON.stringify(source_user);
-	// var target = JSON.stringify(target_user);
 	var query = "SELECT message_text, post_time FROM message WHERE message_type=\"PRIVATE\" AND source_user=\"" + source_user + "\" AND target_user=\"" + target_user + "\"";
 	var private_messages = [];
 	checkTableExists(function(isSuccess){
