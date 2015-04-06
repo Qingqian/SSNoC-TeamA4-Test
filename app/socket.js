@@ -7,11 +7,10 @@ module.exports = function(_, io, online_users) {
 			io.sockets.emit('add connection', {online_users: online_users});
 		});
 
-		// socket.on('disconnect', function(){
-		// 	console.log('socket server side' +socket.username);
-		// 	delete online_users[socket.username];
-		// 	io.sockets.emit('remove connection',{online_users: online_users});
-		// });
+		socket.on('remove connection', function(data){
+			delete online_users[data.username];
+			io.sockets.emit('remove connection',{online_users: online_users});
+		});
 
 		//broadcast message to all users
 		socket.on('new public message', function(data){

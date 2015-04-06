@@ -11,8 +11,7 @@ module.exports = function(_) {
 		},
 
 		getLogout: function(req, res) {
-			req.logout();
-			res.redirect('/');
+			res.render('logout');
 		},
 
 		postWelcomeMessage: function(req, res) {
