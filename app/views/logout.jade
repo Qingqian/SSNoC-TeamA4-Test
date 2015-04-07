@@ -4,4 +4,6 @@ block content
 	include login.jade
 
 append footer
+	script(type="text/javascript").
+		var username = !{JSON.stringify(username)};
 	script(src="../../js/logout.js")

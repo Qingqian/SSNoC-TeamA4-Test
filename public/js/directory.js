@@ -105,7 +105,6 @@ function updateDirectory(online_users) {
     //start private chat
     $('button').click(function(){
     	var target_user = $(this).attr('name');
-    	console.log(target_user);
     	if(target_user) {
     		var form = $("<form method='post', action='/private-chat'></form>");
         	var input_target = $("<input type='hidden', name='target_user'>");

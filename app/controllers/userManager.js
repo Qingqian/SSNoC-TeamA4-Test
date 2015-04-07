@@ -11,7 +11,9 @@ module.exports = function(_) {
 		},
 
 		getLogout: function(req, res) {
-			res.render('logout');
+			var username = req.session.passport.user.username;
+			req.session.destroy();
+			res.render('logout',{username:username});
 		},
 
 		postWelcomeMessage: function(req, res) {
