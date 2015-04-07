@@ -26,5 +26,12 @@ module.exports = function(_, io, online_users) {
 			io.sockets.emit('change status', {online_users: online_users, user_info: data});
 		});
 
+		//handle with the private messages
+		socket.on('send private message', function(data){
+			var source_user = data.source_user + "-source";
+			io.sockets.emit(source_user,data);
+			io.sockets.emit(data.target_user,data);
+		});
+
 	});
 }

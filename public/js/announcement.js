@@ -35,8 +35,8 @@ $('#post_announcement_btn').click(function(){
 	var announcement_title = $('#announcement_title').val();
 	var announcement_content = $('#announcement_content').val();
 	var currentdate = new Date();
-	var datetime = currentdate.getDate() + "/"
-				+ (currentdate.getMonth()+1)  + "/" 
+	var datetime = (currentdate.getMonth()+1)  + "/"
+				+ currentdate.getDate()  + "/" 
 				+ currentdate.getFullYear() + " @ "  
 				+ currentdate.getHours() + ":"  
 				+ currentdate.getMinutes() + ":" 

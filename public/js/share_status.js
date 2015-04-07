@@ -56,8 +56,8 @@ client_socket.on('change status', function(data){
 $("#change_status_btn").click(function(){
 	var selection = $('#status_options').val();
 	var currentdate = new Date();
-	var datetime = currentdate.getDate() + "/"
-				+ (currentdate.getMonth()+1)  + "/" 
+	var datetime = (currentdate.getMonth()+1)  + "/"
+				+ currentdate.getDate()  + "/" 
 				+ currentdate.getFullYear() + " @ "  
 				+ currentdate.getHours() + ":"  
 				+ currentdate.getMinutes() + ":" 

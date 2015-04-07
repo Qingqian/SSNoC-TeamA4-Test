@@ -39,6 +39,8 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/announcement', checkLogIn, announcementManager.postAnnouncement);
 	/********************* Private Chat *********************/
 	app.post('/private-chat', checkLogIn, messageManager.getPrivateChatPage);
+	app.post('/private-message', checkLogIn, messageManager.postPrivateMessage);
+	app.post('/private-history',checkLogIn, messageManager.getPrivateMessages);
 
 
 	/******************* routes end ****************/

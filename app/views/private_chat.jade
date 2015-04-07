@@ -22,3 +22,8 @@ block content
 							span.input-group-btn
 								button.btn.btn-primary#send_private_message_btn(type="button")
 									span.glyphicon.glyphicon-send(aria-hidden="true")
+append footer
+	script(type="text/javascript").
+		var source_user = !{JSON.stringify(source)};
+		var target_user = !{JSON.stringify(target)};
+	script(src="../../js/private_chat.js")

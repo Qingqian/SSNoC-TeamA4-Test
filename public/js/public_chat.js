@@ -34,7 +34,7 @@ var message_html1 = '<li class="media">\
 							<a herf="#"><img src="/imgs/profile_image.png", height=50/></a></div>\
 						<div class="media-body">\
 							<h4 class="media-heading">';
-var message_html2 = '<small class="text-muted">';
+var message_html2 = '<small class="text-muted pull-right">';
 var message_html3 = '</small><br><p>';
 var message_html4 = '</p></div></li>';
 
@@ -56,8 +56,8 @@ function displayPublicMessages(public_messages) {
 
 send_button.click(function(){
 	var currentdate = new Date();
-	var datetime = currentdate.getDate() + "/"
-				+ (currentdate.getMonth()+1)  + "/" 
+	var datetime = (currentdate.getMonth()+1)  + "/"
+				+ currentdate.getDate()  + "/" 
 				+ currentdate.getFullYear() + " @ "  
 				+ currentdate.getHours() + ":"  
 				+ currentdate.getMinutes() + ":" 
