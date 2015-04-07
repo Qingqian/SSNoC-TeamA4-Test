@@ -33,6 +33,24 @@ var message_target_html2 = '<small class="text-muted">';
 var message_target_html3 = '</small><br><p>';
 var message_target_html4 = '</p></div></li>';
 
+function comparator(a,b) {
+	var time1 = a.post_time.split("@");
+	var time2 = b.post_time.split("@");
+	if(time1[0].trim() < time2[0].trim()) {
+		return -1;
+	} else if(time1[0].trim() > time2[0].trim()) {
+		return 1;
+	} else {
+		if(time1[1].trim() < time2[1].trim()) {
+			return -1;
+		} else if(time1[1].trim() > time2[1].trim()) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+}
+
 function displayPrivateMessages(source_private_messages, target_private_messages) {
 	$('#private_messages').html('');
 	var private_message_blocks = [];
@@ -42,23 +60,7 @@ function displayPrivateMessages(source_private_messages, target_private_messages
 	for(var i=0;i<target_private_messages.length;i++) {
 		private_message_blocks.push(target_private_messages[i]);
 	}
-	private_message_blocks.sort(function(a,b) {
-		var time1 = a.post_time.split("@");
-		var time2 = b.post_time.split("@");
-		if(time1[0].trim() < time2[0].trim()) {
-			return -1;
-		} else if(time1[0].trim() > time2[0].trim()) {
-			return 1;
-		} else {
-			if(time1[1].trim() < time2[1].trim()) {
-				return -1;
-			} else if(time1[1].trim() > time2[1].trim()) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	});
+	private_message_blocks.sort(comparator);
 	for(var i=0;i<private_message_blocks.length;i++) {
 		var private_message = private_message_blocks[i];
 		var message_html;
@@ -108,5 +110,4 @@ $('#send_private_message_btn').click(function(){
 	}).fail(function(){
 		console.log('error on posting this message');
 	});
-
 });
