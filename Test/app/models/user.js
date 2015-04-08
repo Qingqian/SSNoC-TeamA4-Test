@@ -14,11 +14,15 @@ if (!exists) {
     fs.openSync(db_file, 'w');
 }
 
-function User(username, password, user_status, change_status_time) {
+function User(username, password, user_status, change_status_time, _lat, _long, _gps_enabled) {
 	this.username = username;
 	this.password = password;
 	this.user_status = user_status;
 	this.change_status_time = change_status_time;
+	/* gps information */
+	this._lat = _lat;
+	this._long = _long;
+	this._gps_enabled = _gps_enabled;
 }
 
 User.prototype.generateHash = function(password) {
@@ -35,7 +39,7 @@ User.prototype.isValidPassword = function(password, callback) {
 };
 
 function checkTableExists(callback) {
-	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT)", function(err){
+	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT, lat Text, lon TEXT, gps_enabled TEXT)", function(err){
 		if(err) {
 			callback(false);
 			return;
@@ -46,7 +50,7 @@ function checkTableExists(callback) {
 }
 
 User.saveNewUser = function(username, password, callback) {
-	var newUser = new User(username, password, undefined);
+	var newUser = new User(username, password, undefined, undefined, undefined, false);
 	var token = newUser.generateHash(password);
 	newUser.token = token;
 	var currentdate = new Date();
@@ -59,8 +63,8 @@ User.saveNewUser = function(username, password, callback) {
 	checkTableExists(function(isSuccess){
 		if(isSuccess) {
 			db.serialize(function(){
-				var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?, ?)");
-				setUser_stmt.run(username, token, undefined, datetime, function(err){
+				var setUser_stmt = db.prepare("INSERT INTO user_info VALUES (?, ?, ?, ?, ?, ?, ?)");
+				setUser_stmt.run(username, token, undefined, datetime, undefined, undefined, false, function(err){
 					if (err) {
 						callback(err,null);
 						return;
@@ -86,7 +90,7 @@ User.getUser = function(username, callback) {
 					callback(null,null);
 					return;
 				} else{
-					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time, row.lat, row.lon, row.gps_enabled);
 					callback(null, user);
 				}
 			});
@@ -104,7 +108,7 @@ User.getAllUsers = function(callback) {
 					callback(err,null);
 					return;
 				} else {
-					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time, row.lat, row.lon, row.gps_enabled);
 					users.push(user);
 				}
 			}, function(err,complete){
