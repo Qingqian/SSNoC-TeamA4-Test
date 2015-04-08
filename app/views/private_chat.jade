@@ -1,0 +1,29 @@
+extends layout
+
+block content
+	include navigationbar.jade
+ 
+	div.container
+		div.row
+			div.col-xs-12.col-sm-12.col-md-8.col-md-offset-2
+				div.panel.panel-primary
+					div.panel-heading
+						div.row
+							div.col-xs-4.col-sm-4.col-md-4
+								a.btn.btn-primary(href="/directory") 
+									span.glyphicon.glyphicon-arrow-left
+							div.col-xs-8.col-sm-8.col-md-8
+								h4 #{target}
+					div.panel-body
+						ul.media-list#private_messages
+					div.panel-footer
+						div.input-group
+							input.form-control#private_message_content(type="text" placeholder='Enter message...')
+							span.input-group-btn
+								button.btn.btn-primary#send_private_message_btn(type="button")
+									span.glyphicon.glyphicon-send(aria-hidden="true")
+append footer
+	script(type="text/javascript").
+		var source_user = !{JSON.stringify(source)};
+		var target_user = !{JSON.stringify(target)};
+	script(src="../../js/private_chat.js")

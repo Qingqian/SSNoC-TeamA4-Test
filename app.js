@@ -12,10 +12,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var citizens = {
-	online :{},
-	total : []
-};
+var online_users = {};
 
 //passport authentication
 require('./config/passport')(passport);
@@ -42,12 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flashing messages stored in the session
 
-require('./app/routes.js')(app, _, io, passport,citizens);
-require('./app/socket.js')(_, io,citizens);
+require('./app/routes.js')(app, _, io, passport,online_users);
+require('./app/socket.js')(_, io,online_users);
 //server listens to port 3500
 server.listen(3500);
 console.log("Server started on port 3500");
-
-
-/************************************************************************************/
 
