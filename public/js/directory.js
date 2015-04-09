@@ -93,7 +93,7 @@ function updateDirectory(online_users) {
     $('.dropdown-user').click(function() {
     	var username = $(this).attr('data');
     	var icon = $(this);
-    	$(username).slideToggle("slow", function(){
+    	$(username).slideToggle("fast", function(){
     		if($(username).is(":visible")) {
     			icon.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>')
     		} else {

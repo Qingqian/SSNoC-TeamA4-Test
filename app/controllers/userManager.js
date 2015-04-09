@@ -67,7 +67,24 @@ module.exports = function(_) {
 
 		getStatusPage : function(req,res) {
 			res.render('share_status');
-		}
+		},
+	
+		getGPSPage : function(req,res){
+			res.render('gps');
+		},
 
+		changeGPSCoords : function(req, res) {
+			var username = req.session.passport.user.username;
+			var lat = req.body.lat;
+			var lon = req.body.lon;
+			var gps_enabled = req.body.gps_enabled;
+			User.changeGPS(username, lat, lon, gps_enabled, function(err,result){
+				if (err){
+					res.json({err_message:'Error setting gps location', success_message: null});
+				} else {
+					res.json({err_message:null, success_message: "successfully updated gps coordinates"});
+				}
+			});
+		}
 	};
 };

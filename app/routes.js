@@ -23,6 +23,9 @@ module.exports = function(app, _, io, passport, online_users){
 	app.get('/logout', checkLogIn, userManager.getLogout);
 	app.get('/users', checkLogIn, userManager.getAllUser);
 	app.get('/user', checkLogIn, userManager.getUser);
+	/************************* GPS ****************************/
+	app.get('/gps', checkLogIn, userManager.getGPSPage);
+	app.post('/gps', checkLogIn, userManager.changeGPSCoords);
 	/*********************** directory ************************/
 	app.get('/directory', checkLogIn, userManager.getDirectory);
 	/******************** Public Chat *************************/

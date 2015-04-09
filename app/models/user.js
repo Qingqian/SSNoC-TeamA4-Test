@@ -14,15 +14,15 @@ if (!exists) {
     fs.openSync(db_file, 'w');
 }
 
-function User(username, password, user_status, change_status_time, _lat, _long, _gps_enabled) {
+function User(username, password, user_status, change_status_time, lat, lon, gps_enabled) {
 	this.username = username;
 	this.password = password;
 	this.user_status = user_status;
 	this.change_status_time = change_status_time;
 	/* gps information */
-	this._lat = _lat;
-	this._long = _long;
-	this._gps_enabled = _gps_enabled;
+	this.lat = lat;
+	this.lon = lon;
+	this.gps_enabled = gps_enabled;
 }
 
 User.prototype.generateHash = function(password) {
@@ -39,7 +39,7 @@ User.prototype.isValidPassword = function(password, callback) {
 };
 
 function checkTableExists(callback) {
-	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT, lat Text, lon TEXT, gps_enabled TEXT)", function(err){
+	db.run("CREATE TABLE if not exists user_info (username TEXT, password TEXT, user_status TEXT, change_status_time TEXT, lat TEXT, lon TEXT, gps_enabled TEXT)", function(err){
 		if(err) {
 			callback(false);
 			return;
@@ -135,6 +135,27 @@ User.changeStatus = function(username, user_status, change_status_time, callback
 						return;
 					} else {
 						var new_status = {username:username, user_status:user_status, change_status_time:change_status_time};
+						callback(null,new_status);
+					}
+					status_stmt.finalize();
+				});
+			});
+		}
+	});
+}
+
+User.changeGPS = function(username, lat, lon, gps_enabled, callback) {
+	var query = "UPDATE user_info SET lat = ?, lon = ?, gps_enabled = ? WHERE username = \"" + username + "\"";
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.serialize(function(){
+				var status_stmt = db.prepare(query);
+				status_stmt.run(lat, lon, gps_enabled, function(err){
+					if(err) {
+						callback(err,null);
+						return;
+					} else {
+						var new_status = {username:username, lat:lat, lon:lon, gps_enabled:gps_enabled};
 						callback(null,new_status);
 					}
 					status_stmt.finalize();
