@@ -165,7 +165,7 @@ function displayMessages(messages) {
 	messages.sort(comparator);
 	$('#result').html('');
     $('#result').append(result_heading);
-    displayMessageHelper(messages);
+    displayPublicMessageHelper(messages);
 }
 
 function displayPublicMessageHelper(messages) {
@@ -180,7 +180,7 @@ function displayPublicMessageHelper(messages) {
 		var button_block = '<div class="panel-body"><button class="btn btn-default btn-block" id="load_btn"> Load More...</div>';
 		$('#result').append(button_block);
 		$('#load_btn').click(function(){
-			displayMessageHelper(messages.splice(10, messages.length));
+			displayPublicMessageHelper(messages.splice(10, messages.length));
 		});
 	}
 }
@@ -204,7 +204,7 @@ function displayPrivateMessageHelper(messages) {
 		var button_block = '<div class="panel-body"><button class="btn btn-default btn-block" id="load_btn"> Load More...</div>';
 		$('#result').append(button_block);
 		$('#load_btn').click(function(){
-			displayMessageHelper(messages.splice(10, messages.length));
+			displayPrivateMessageHelper(messages.splice(10, messages.length));
 		});
 	}
 }
