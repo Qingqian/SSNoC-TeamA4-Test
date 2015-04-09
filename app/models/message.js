@@ -121,6 +121,66 @@ Message.postPrivateMessage = function(source_user, message_text, post_time, targ
 	});
 }
 
+Message.searchPublicMessage = function(words, callback) {
+	var query1 = "SELECT source_user, message_text, post_time FROM message WHERE message_type=\"PUBLIC\" AND target_user=\"WALL\"";
+	var query2="";
+	for(var i=0;i<words.length;i++) {
+		query2 += " AND message_text LIKE \"%" + words[i] + "%\"";
+	}
+	var query = query1 + query2;
+	var public_messages = [];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err,row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var public_message = new Message(row.source_user, row.message_text, row.post_time, 'WALL', 'PUBLIC');
+					public_messages.push(public_message);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null,public_messages);
+				}
+			});
+		}
+	});
+}
+
+Message.searchPrivateMessage = function(words, source_user, callback) {
+	var query1 = "SELECT * FROM message WHERE message_type=\"PRIVATE\" AND source_user=\"" + source_user + "\"";
+	var query2="";
+	for(var i=0;i<words.length;i++) {
+		query2 += " AND message_text LIKE \"%" + words[i] + "%\"";
+	}
+	var query = query1 + query2;
+	var private_messages = [];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err,row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var private_message = new Message(row.source_user, row.message_text, row.post_time, row.target_user, 'PRIVATE');
+					private_messages.push(private_message);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null,private_messages);
+				}
+			});
+		}
+	});
+}
+
 module.exports = Message;
 
 
