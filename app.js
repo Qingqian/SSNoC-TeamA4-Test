@@ -39,6 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flashing messages stored in the session
 
+
 require('./app/routes.js')(app, _, io, passport,online_users);
 require('./app/socket.js')(_, io,online_users);
 //server listens to port 3500
