@@ -11,11 +11,11 @@
 <tr><td><a href="FirstToJoinCommunity.html">FirstToJoinCommunity</a></td></tr>
 <tr><td><a href="JoinExistingCommunity.html">JoinExistingCommunity</a></td></tr>
 <tr><td><a href="JoinExistingUser.html">JoinExistingUser</a></td></tr>
-<tr><td><a href="ExistingUsernameWrongPassword.html">ExistingUsernameWrongPassword</a></td></tr>
 <tr><td><a href="UsernameTooShort.html">UsernameTooShort</a></td></tr>
 <tr><td><a href="PasswordTooShort.html">PasswordTooShort</a></td></tr>
 <tr><td><a href="PasswordsDon'tMatch.html">PasswordsDon'tMatch</a></td></tr>
 <tr><td><a href="LoginExistingUser.html">LoginExistingUser</a></td></tr>
+<tr><td><a href="ExistingUsernameWrongPassword.html">ExistingUsernameWrongPassword</a></td></tr>
 </tbody></table>
 </body>
 </html>

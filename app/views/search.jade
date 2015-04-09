@@ -1,0 +1,31 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		div.row
+			div.col-xs-12.col-sm-12.col-md-8.col-md-offset-2
+				div.panel.panel-primary
+					div.panel-heading.text-center
+						h4 Search Informations
+					div.panel-body
+						div#error
+						h4.text-center Pick up a search criteria
+						hr
+						select.form-control(name="options")#search_options
+							option(value='username') Search by username
+							option(value='status') Search by status
+							option(value='public_message') Search public messages
+							option(value='announcement') Search announcements
+							option(value='private_message') Search private messages
+						br
+					div.panel-footer
+						div.input-group
+							input.form-control#search_content(type="text" placeholder='Search...')
+							span.input-group-btn
+								button.btn.btn-primary#search_btn(type="button")
+									span.glyphicon.glyphicon-search(aria-hidden="true")
+				div#result
+append footer
+	script(src="../../js/search.js")
