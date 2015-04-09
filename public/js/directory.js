@@ -25,7 +25,6 @@ client_socket.on("connect", function(){
 	}).fail(function(data){
 		console.log('Error on getting current user');
 	});
-
 });
 
 client_socket.on("add connection", function(message){
@@ -59,6 +58,8 @@ function updateDirectory(online_users) {
 		var personal_info = '<div class="row user-row" id="' + online_usernames[i] + '">' + photo + username + dropdown + '</div>';
 		var dropdown_info = '<div class="row dropdown-info ' + online_usernames[i]+ '"><button type="button" name="' + online_usernames[i]+'" ' +
           						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">Chat</button>' + 
+								'<button type="button" name="' + online_usernames[i]+'" ' +
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="compass">Compass</button>' + 
           						'<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div></div>';
 		if(current_username == online_usernames[i]) {
 			online_list.append(personal_info);
@@ -82,8 +83,10 @@ function updateDirectory(online_users) {
 		var dropdown_icon = '<i class="glyphicon glyphicon-chevron-down text-muted"></i>';
 		var dropdown = '<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data=".' + offline[i].username + '">' + dropdown_icon + '</div>';
 		var personal_info = '<div class="row user-row" id="' + offline[i].username + '">' + photo + username + dropdown + '</div>';
-		var dropdown_info = '<div class="row dropdown-info ' + offline[i].username + '"><button type="button" name="' + offline[i].username+'" ' +
-          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">Chat</button>' + 
+		var dropdown_info = '<div class="row dropdown-info ' + offline[i].username + '"> + <button type="button" name="' + offline[i].username+'" ' +
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="private_chat">Private Chat</button>' + 
+								'<button type="button" name="' + offline[i].username+'" ' +
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="compass">Compass</button>' + 
           						'<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div></div>';
         offline_list.append(personal_info);
         offline_list.append(dropdown_info);
@@ -103,7 +106,7 @@ function updateDirectory(online_users) {
     });
 
     //start private chat
-    $('button').click(function(){
+    $('#private_chat').click(function(){
     	var target_user = $(this).attr('name');
     	if(target_user) {
     		var form = $("<form method='post', action='/private-chat'></form>");
@@ -116,6 +119,20 @@ function updateDirectory(online_users) {
 	        form.submit();
     	}
     });
+
+	$('#compass').click(function(){
+		var target_user = $(this).attr('name');
+		if(target_user) {
+			var form = $("<form method='post', action='/compass'></form>");
+        	var input_target = $("<input type='hidden', name='target_user'>");
+	        var input_source = $("<input type='hidden', name='source_user'>");
+	        input_target.val(target_user);
+	        input_source.val(current_username);
+	        form.append(input_target);
+	        form.append(input_source);
+	        form.submit();
+		}
+	});
 }
 
 function getStatus(user_status) {

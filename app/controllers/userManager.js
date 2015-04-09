@@ -69,6 +69,23 @@ module.exports = function(_) {
 			res.render('share_status');
 		},
 	
+		getCompassPage : function(req,res) {
+			var target_user = req.body.target_user;
+			var source_user = req.body.source_user;
+			res.render('compass', {source : source_user, target : target_user});
+		},
+
+		getCompassUser: function(req,res) {
+			var other_user = req.body.target_user;
+			User.getUser(user, function(err,user){
+				if (err){
+					res.json({username:other_user, lat:undefined, lon:undefined, gps_enabled:undefined});
+				} else {
+					res.json({username:other_user, lat:user.lat, lon:user.lon, gps_enabled:user.gps_enabled});
+				}
+			});
+		},
+
 		getGPSPage : function(req,res){
 			res.render('gps');
 		},
