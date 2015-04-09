@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		br
+		div.row
+			div.col-xs-3.col-sm-2.col-md-1.col-lg-1
+				img(src="../../imgs/online.png" height =10)
+				br
+				img(src="../../imgs/profile_image.png" height = 50)
+			div.col-xs-8.col-sm-9.col-md-10.col-lg-10#status_information        
+		hr
+		div.panel.panel-info
+			div.panel-heading 
+				h3.panel-title Change Your Status
+			div.panel-body
+				select.form-control(name="options")#status_options
+					option OK
+					option HELP
+					option EMERGENCY
+				br
+				button.btn.btn-success.form-control(type="button")#change_status_btn Change Status
+
+append footer
+	script(src="../../js/share_status.js")

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		div.col-xs-12.col-sm-12.col-md-10.col-lg-12.col-lg-offset-2.col-md-offset-2
+			div.panel.panel-info
+				div.panel-heading 
+					h3.panel-title Announcements
+				div.panel-body
+					ul#announcements
+				div.panel-footer
+					form.form-horizontal
+						div.form-group
+							label.col-xs-2.col-sm-2.control-label(for="title") Title
+							div.col-xs-10.col-sm-10
+								input.form-control(type="text" placeholder="Title")#announcement_title
+						div.form-group
+							label.col-xs-2.col-sm-2.control-label(for="content") Content
+							div.col-xs-10.col-sm-10
+								input.form-control(type="text" placeholder="Enter Announcement...")#announcement_content
+						div.form-group
+							div.col-xs-offset-2.col-xs-10.col-sm-offset-2.col-sm-10
+								button.btn.btn-primary(type="submit")#post_announcement_btn POST ANNOUNCEMENT
+append footer
+	script(src="../../js/announcement.js")

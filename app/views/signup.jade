@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-xs-12.col-sm-8.col-md-6.col-sm-offset-2.col-md-offset-3
+				form(action="/signup", method="post", id="signUpForm")
+					h2 Sign Up 
+					.colorgraph
+					.blank
+					.form-group
+						input(type="text", name="username", id="username", placeholder="Username").form-control.input-lg
+					.form-group
+						input(type="password", name="password", id="password", placeholder="Password").form-control.input-lg
+					.form-group
+						input(type="password", name="password_confirmation", id="password_confirmation", placeholder="Confirm Password").form-control.input-lg
+					.colorgraph
+					.blank
+					.row
+						.col-xs-12.col-md-6
+							input(type="submit", value="Register").btn.btn-primary.btn-block.btn-lg
+							br
+						.col-xs-12.col-md-6
+							a(href="/").btn.btn-danger.btn-block.btn-lg Cancel
+				br
+				a(href="/login") Already a current user? Go to login page
+
+append footer
+	script(src="../../js/jquery.validate.min.js")
+	script(src="../../js/userinfo.js")
