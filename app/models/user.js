@@ -94,6 +94,31 @@ User.getUser = function(username, callback) {
 	});	
 };
 
+User.searchUser = function(username, callback) {
+	var query = "SELECT * FROM user_info WHERE username LIKE \"%" + username + "%\"";
+	var users=[];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err, row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					users.push(user);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null, users);
+				}
+			});
+		}
+	});
+};
+
 User.getAllUsers = function(callback) {
 	var query = "SELECT * FROM user_info";
 	var users =[];
@@ -135,6 +160,31 @@ User.changeStatus = function(username, user_status, change_status_time, callback
 					}
 					status_stmt.finalize();
 				});
+			});
+		}
+	});
+}
+
+User.searchStatus = function(user_status, callback) {
+	var query = "SELECT * FROM user_info WHERE user_status = \"" + user_status + "\"";
+	var users=[];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err, row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					users.push(user);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null, users);
+				}
 			});
 		}
 	});

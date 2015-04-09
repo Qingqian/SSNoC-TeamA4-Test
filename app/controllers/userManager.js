@@ -64,7 +64,7 @@ module.exports = function(_) {
 				}
 			});
 		},
-
+		
 		getStatusPage : function(req,res) {
 			res.render('share_status');
 		},
