@@ -98,6 +98,31 @@ User.getUser = function(username, callback) {
 	});	
 };
 
+User.searchUser = function(username, callback) {
+	var query = "SELECT * FROM user_info WHERE username LIKE \"%" + username + "%\"";
+	var users=[];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err, row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					users.push(user);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null, users);
+				}
+			});
+		}
+	});
+};
+
 User.getAllUsers = function(callback) {
 	var query = "SELECT * FROM user_info";
 	var users =[];
@@ -160,9 +185,40 @@ User.changeGPS = function(username, lat, lon, gps_enabled, callback) {
 					}
 					status_stmt.finalize();
 				});
+
+User.searchStatus = function(user_status, callback) {
+	var query = "SELECT * FROM user_info WHERE user_status = \"" + user_status + "\"";
+	var users=[];
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.each(query, function(err, row){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var user = new User(row.username, row.password, row.user_status, row.change_status_time);
+					users.push(user);
+				}
+			}, function(err,complete){
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null, users);
+				}
 			});
 		}
 	});
+}
+
+/******************* Debug ****************/
+// clearDB
+// Pure debug function that completely wipes existing user DB
+// NOTE: This will not reset any data saved by server like
+// directory list
+User.clearDB = function() {
+	console.log("Creating DB file.");
+    fs.openSync(db_file, 'w');
 }
 
 module.exports = User;

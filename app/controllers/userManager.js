@@ -64,7 +64,7 @@ module.exports = function(_) {
 				}
 			});
 		},
-
+		
 		getStatusPage : function(req,res) {
 			res.render('share_status');
 		},
@@ -85,6 +85,11 @@ module.exports = function(_) {
 					res.json({err_message:null, success_message: "successfully updated gps coordinates"});
 				}
 			});
+		
+		/******************* routes start ****************/
+		clearDB : function(req, res) {
+			User.clearDB();
+			res.render('login', {message: req.flash('LoginMessage')});
 		}
 	};
 };

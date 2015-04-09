@@ -30,6 +30,7 @@ module.exports = function(passport) {
   						return done(err);
   					}
   					if(!user) {
+						//TODO: This does not display
               			console.log('no such user');
   						return done(null,false, req.flash('loginMessage','No user found.'));
   					}
@@ -47,7 +48,7 @@ module.exports = function(passport) {
   		}
   	));
 
-  	/*****************LOCAL SIGNUP********************/
+  	/***************** LOCAL SIGNUP ********************/
   	passport.use('local-signup', new LocalStrategy({
   		//override default
   		usernameField : 'username',
@@ -63,7 +64,17 @@ module.exports = function(passport) {
   							return done(err);
   						}
                         if(user) {
-                            return done(null, user);
+							// Valid User
+							// Confirm password matches
+							user.isValidPassword(password, function(isValid){
+								if(isValid) {
+									console.log('login successfully')
+									return done(null,user);
+								} else {
+									console.log('invalid pwd');
+									return done(err);
+								} 
+							});
                         } else {
                             User.saveNewUser(username, password, function(err, newUser){
                                 if(err)
