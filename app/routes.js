@@ -3,6 +3,7 @@ module.exports = function(app, _, io, passport, online_users){
 	var userManager = require('./controllers/userManager')(_);
 	var messageManager = require('./controllers/messageManager')(_);
 	var announcementManager = require('./controllers/announcementManager')(_);
+	var searchManager = require('./controllers/searchManager')(_,online_users);
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
@@ -41,6 +42,10 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/private-chat', checkLogIn, messageManager.getPrivateChatPage);
 	app.post('/private-message', checkLogIn, messageManager.postPrivateMessage);
 	app.post('/private-history',checkLogIn, messageManager.getPrivateMessages);
+	/********************* Search Information *********************/
+	app.get('/search', checkLogIn, searchManager.getSearchPage);
+	app.post('/search-user',checkLogIn, searchManager.searchUser);
+	app.post('/search-status',checkLogIn, searchManager.searchStatus);
 
 
 	/******************* routes end ****************/
