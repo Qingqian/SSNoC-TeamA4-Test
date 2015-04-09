@@ -4,16 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:3500/" />
-<title>JoinExistingCommunity</title>
+<title>PostAnnouncement</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">JoinExistingCommunity</td></tr>
+<tr><td rowspan="1" colspan="3">PostAnnouncement</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/</td>
+	<td>/clearDB</td>
 	<td></td>
 </tr>
 <tr>
@@ -42,35 +42,41 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyText</td>
-	<td>css=h3</td>
-	<td>Welcome to Survivable Social Network on a Chip System</td>
+	<td>clickAndWait</td>
+	<td>//li[6]/a/strong</td>
+	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Directory List</td>
+	<td>type</td>
+	<td>id=announcement_title</td>
+	<td>Important </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=announcement_content</td>
+	<td>This is a test! PANIC!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=post_announcement_btn</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=h4</td>
-	<td>Online users</td>
+	<td>css=div.panel.panel-default &gt; div.panel-heading &gt; h3.panel-title</td>
+	<td>*Important*</td>
 </tr>
 <tr>
-	<td>verifyNotText</td>
-	<td>//div[@id='Miguel']/div[2]</td>
-	<td>Miguel</td>
-</tr>
-<tr>
-	<td>verifyNotText</td>
-	<td>//div[@id='Proxy']/div[2]</td>
-	<td>Proxy</td>
+	<td>verifyText</td>
+	<td>css=div.panel.panel-default &gt; div.panel-body</td>
+	<td>This is a test! PANIC!</td>
 </tr>
 <tr>
 	<td>open</td>
 	<td>/logout</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>
