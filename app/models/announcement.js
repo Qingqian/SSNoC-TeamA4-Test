@@ -73,6 +73,36 @@ Announcement.getAllAnnouncements = function(callback) {
 	});
 }
 
+Announcement.searchAnnouncement = function(words, callback) {
+	var query1 = "SELECT * FROM announcements WHERE "
+	var query2="";
+	for(var i=0;i<words.length-1;i++) {
+		query2 += "post_content LIKE \"%" + words[i] + "%\"" + " AND ";
+	}
+	query2 += "post_content LIKE \"%" + words[i] + "%\"";
+	var query = query1 + query2;
+	console.log(query);
+	var announcements = [];
+	checkTableExists(function(isSuccess){
+		db.each(query, function(err,row){
+			if(err) {
+				callback(err,null);
+				return;
+			} else {
+				var announcement = new Announcement(row.username, row.post_title, row.post_content, row.post_time);
+				announcements.push(announcement);
+			}
+		}, function(err, complete){
+			if(err) {
+				callback(err,null);
+				return; 
+			} else {
+				callback(null,announcements);
+			}
+		});
+	});
+}
+
 module.exports = Announcement;
 
 

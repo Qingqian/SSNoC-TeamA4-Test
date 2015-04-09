@@ -54,6 +54,9 @@ module.exports = function(app, _, io, passport, online_users){
 	app.get('/search', checkLogIn, searchManager.getSearchPage);
 	app.post('/search-user',checkLogIn, searchManager.searchUser);
 	app.post('/search-status',checkLogIn, searchManager.searchStatus);
+	app.post('/search-public-message', checkLogIn, searchManager.searchPublicMessage);
+	app.post('/search-announcement', checkLogIn, searchManager.searchAnnouncement);
+	app.post('/search-private-message',checkLogIn, searchManager.searchPrivateMessage);
 
 	/******************* Debug ****************/
 	app.get('/cleardb', userManager.clearDB);
