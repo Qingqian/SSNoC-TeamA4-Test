@@ -85,7 +85,7 @@ module.exports = function(_) {
 					res.json({err_message:null, success_message: "successfully updated gps coordinates"});
 				}
 			});
-		
+		},	
 		/******************* routes start ****************/
 		clearDB : function(req, res) {
 			User.clearDB();

@@ -185,6 +185,10 @@ User.changeGPS = function(username, lat, lon, gps_enabled, callback) {
 					}
 					status_stmt.finalize();
 				});
+			});
+		}
+	});
+}
 
 User.searchStatus = function(user_status, callback) {
 	var query = "SELECT * FROM user_info WHERE user_status = \"" + user_status + "\"";
