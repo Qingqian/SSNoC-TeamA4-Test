@@ -77,7 +77,7 @@ module.exports = function(_) {
 
 		getCompassUser: function(req,res) {
 			var other_user = req.body.target_user;
-			User.getUser(user, function(err,user){
+			User.getUser(other_user, function(err,user){
 				if (err){
 					res.json({username:other_user, lat:undefined, lon:undefined, gps_enabled:undefined});
 				} else {
