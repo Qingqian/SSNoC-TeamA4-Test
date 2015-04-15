@@ -4,7 +4,8 @@ module.exports = function(app, _, io, passport, online_users){
 	var messageManager = require('./controllers/messageManager')(_);
 	var announcementManager = require('./controllers/announcementManager')(_);
 	var searchManager = require('./controllers/searchManager')(_,online_users);
-	
+	var groupChatManager = require('./controllers/guestManager')(_);
+
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
@@ -49,7 +50,15 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/private-chat', checkLogIn, messageManager.getPrivateChatPage);
 	app.post('/private-message', checkLogIn, messageManager.postPrivateMessage);
 	app.post('/private-history',checkLogIn, messageManager.getPrivateMessages);
-
+	/********************* Group Chat *********************/
+	app.get('/group-chat', checkLogIn, groupChatManager.getGroupChatPage);
+	app.post('/new-group-chat', checkLogIn, groupChatManager.addNewGuest);
+	app.post('/new-group-message', checkLogIn, groupChatManager.addNewMessage);
+	app.get('/get-groupchat-list',checkLogIn,groupChatManager.getGroupChats);
+	app.post('/open-group-chat',checkLogIn, groupChatManager.getGroupMessages);
+	app.post('/invite', checkLogIn, groupChatManager.addNewGuest);
+	app.post('/get-members',checkLogIn, groupChatManager.getMembers);
+	app.post('/get-invitelist',checkLogIn, groupChatManager.getInviteList);
 	/********************* Search Information *********************/
 	app.get('/search', checkLogIn, searchManager.getSearchPage);
 	app.post('/search-user',checkLogIn, searchManager.searchUser);

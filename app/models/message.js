@@ -121,6 +121,52 @@ Message.postPrivateMessage = function(source_user, message_text, post_time, targ
 	});
 }
 
+Message.postGroupMessage = function(source_user, message_text, post_time, target_user, callback) {
+	var group_stmt = db.prepare("INSERT INTO message VALUES (?,?,?,?,?);");
+	var group_message = new Message(source_user, message_text, post_time, target_user, 'GROUP');
+	
+	checkTableExists(function(isSuccess) {
+		if(isSuccess) {
+			db.serialize(function() {
+				group_stmt.run(source_user,message_text,post_time,target_user, 'GROUP', function(err) {
+					if(err) {
+						callback(err,null);
+						return;
+					} else {
+						callback(null,group_message);
+					}
+					group_stmt.finalize();
+				});
+			});
+		}
+	});
+}
+
+Message.getGroupMessage = function(chatname, callback) {
+	var query = "SELECT source_user, message_text, post_time FROM message WHERE message_type=\"GROUP\" AND target_user=\"" + chatname + "\"";
+	var group_messages = [];
+		
+	checkTableExists(function(isSuccess) {
+		if(isSuccess) {
+			db.each(query, function(err,row) {
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					var group_message = new Message(row.source_user, row.message_text, row.post_time, chatname, 'GROUP');
+					group_messages.push(group_message);
+				}
+			}, function(err, complete) {
+				if(err) {
+					callback(err,null);
+					return;
+				} else {
+					callback(null, group_messages);
+				}
+			});
+		}
+	});
+}
 Message.searchPublicMessage = function(words, callback) {
 	var query1 = "SELECT source_user, message_text, post_time FROM message WHERE message_type=\"PUBLIC\" AND target_user=\"WALL\"";
 	var query2="";
