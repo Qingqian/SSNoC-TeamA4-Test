@@ -43,7 +43,6 @@ module.exports = function(_, online_users) {
 			var source_user = req.body.source_user;
 			var post_time = req.body.post_time;
 			var message = req.body.message_text;
-			//console.log(chatname + " added");
 			Message.postGroupMessage(source_user, message, post_time, chatname, function(err, group_message) {
 				if(err) {
 					console.log('error on posting group message');
@@ -55,12 +54,12 @@ module.exports = function(_, online_users) {
 		
 		getGroupMessages : function(req,res) {
 			var chatname = req.body.chatname;
-			//console.log(chatname + " displayed");
+			console.log(chatname);
 			Message.getGroupMessage(chatname, function(err, group_messages) {
 				if(err) {
 					console.log('error on getting group messages');
 				} else {
-					res.json({group_messages: group_messages, chatname: chatname});
+					res.json({group_messages: group_messages});
 				}
 			});
 		},
@@ -77,7 +76,6 @@ module.exports = function(_, online_users) {
 							for(var i = 0; i < users.length; i++) {
 								if(members.indexOf(users[i].username) == -1) {
 									invitelist.push(users[i].username);
-									console.log(users[i].username);
 								} 
 							}
 							res.json({invitelist: invitelist});
@@ -93,7 +91,8 @@ module.exports = function(_, online_users) {
 		
 		openGroupChatPage : function(req,res) {
 			var chatname = req.body.chatname;
-			res.render('group_chat',chatname);
+			var source_user = req.body.source_user;
+			res.render('single_group_chat',{source: source_user, chatname: chatname});
 		}
 	};
 };

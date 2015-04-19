@@ -32,14 +32,18 @@ module.exports = function(_, io, online_users) {
 			io.sockets.emit(source_user,data);
 			io.sockets.emit(data.target_user,data);
 		});
-		socket.on('new group chat', function(data){
-			io.sockets.emit('new group chat', data);
-		});
-		socket.on('new group message', function(data){
-			io.sockets.emit('new group message', data);
+		socket.on('send group message', function(data){
+			var target_users = data.target_user;
+			for(var i = 0; i < target_users.length; i++) {
+				if(data.source_user == target_users[i]) {
+					console.log("self");
+					io.sockets.emit(target_users[i] + "-source",data);
+				} else {
+					console.log("others");
+					io.sockets.emit(target_users[i],data);
+				}
+			}
 		});		
-		socket.on('open group chat',function(data){
-			io.sockets.emit('open group chat',data);
-		});
+
 	});
 }

@@ -16,7 +16,6 @@ block content
 							select.form-control(name="options")#group_chat_list
 							br
 						.col-xs-12.col-md-2
-							form(action="/open-group-chat")
 								input.form-control(type="button" value="Open")#open_group_chat
 				div.panel-footer
 					div.input-group
@@ -24,37 +23,6 @@ block content
 						span.input-group-btn
 							button.btn.btn-primary#create_group_chat(type="button")
 								span.glyphicon.glyphicon-send(aria-hidden="true")
-								
-		div.col-xs-12.col-md-8.col-md-offset-2
-			div.panel.panel-info
-				div.panel-heading
-					h3.panel-title Invite List
-				div.panel-body
-					.row
-						.col-xs-12.col-md-10
-							select.form-control(name="options")#invite_list
-							br
-						.col-xs-12.col-md-2
-							form(action="/invite")
-								input.form-control(type="button" value="Invite")#invite
-	
-	div.container.row
-		div.col-xs-12.col-md-8.col-md-offset-2
-			div.panel.panel-info
-				div.panel-heading
-					h5#chatTitle
-					br
-					h7#members
-					br
-					h7#invited
-			div.panel-body
-				ul.media-list#groupChatMessages
-			div.panel-footer
-				div.input-group
-					input.form-control(type='text', placeholder='Enter Message...')#postGroupMessage
-					span.input-group-btn
-						button.btn.btn-primary(type='button')#sendGroupMessage
-							span.glyphicon.glyphicon-send(aria-hidden="true")
 							
 append footer
 	script(src="../../js/group_chat.js")

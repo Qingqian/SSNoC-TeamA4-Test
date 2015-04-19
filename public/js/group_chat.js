@@ -1,7 +1,6 @@
 var client_socket = io.connect();
 var source_user = "";
 var current_chatroom = "";
-var current_members=[];
 client_socket.on('connect', function(){
 	//get current source user
 	$.ajax({
@@ -45,38 +44,6 @@ function displayGroupChatList(list) {
 	}
 }
 
-function displayGroupMessages(messages, chatname) {
-	$('#chatTitle').html("Current chat room : " + chatname);
-	$('#groupChatMessages').html('');
-
-	for(var i=0;i<messages.length;i++) {
-		var message = messages[i];
-		var message_html = message_html1 + message.source_user + message_html2 + message.post_time + 
-							message_html3 + message.message_text + message_html4;
-		$('#groupChatMessages').append(message_html);
-	}
-}
-
-function displayGroupMembers(members) {
-	$('#members').html("Members : ");
-	for(var i = 0; i < members.length; i++) {
-		$('#members').append(members[i] + ", ");
-	}
-	$('#invited').html('');
-}
-
-function displayInviteList(list) {
-	$('#invite_list').html('');
-	for(var i = 0; i < list.length; i++) {
-		var user = list[i];
-		var option = new Option(user, user);
-		$('#invite_list').append($(option));
-	}
-}
-
-function displayInvited(username) {
-	$('#invited').html(username + " invited.");
-}
 $('#create_group_chat').click(function(){
     var chatName = $('#new_group_chat').val();
     $('#new_group_chat').val('');
@@ -99,93 +66,19 @@ $('#create_group_chat').click(function(){
 
 });
 
-$('#sendGroupMessage').click(function(){
-    var chatName = current_chatroom;
-    var message = $('#postGroupMessage').val();
-
-    $('#postGroupMessage').val(' ');
-    var currentdate = new Date();
-	var datetime = (currentdate.getMonth()+1)  + "/"
-				+ currentdate.getDate()  + "/" 
-				+ currentdate.getFullYear() + " @ "  
-				+ currentdate.getHours() + ":"  
-				+ currentdate.getMinutes() + ":" 
-				+ currentdate.getSeconds();
-    //client_socket.emit('new group message',{source_user:source_user, message_text: message, target_user: chatName, post_time: datetime});
-    //post message to public wall
-    $.ajax({
-		url: '/new-group-message',
-		type: 'POST',
-		data: {source_user: source_user, message_text: message, target_user: chatName, post_time: datetime},
-		dataType: 'json'
-	}).done(function(data){
-		var message = data.group_message;
-		
-		var message_html = message_html1 + message.source_user + message_html2 + message.post_time + 
-							message_html3 + message.message_text + message_html4;
-		$('#groupChatMessages').append(message_html);
-		
-		//console.log(message.message_text);
-	}).fail(function(){
-		console.log('error on creating new group chat');
-	});
-
-});
-
-$('#invite').click(function(){
-    
-    var chatname = current_chatroom;
-    var username = $('#invite_list :selected').val();
-    //client_socket.emit('open group chat',chatname);
-    $.ajax({
-		url: '/invite',
-		type: 'POST',
-		data: {chatname: chatname, username: username},
-		dataType: 'json'
-	}).done(function(data){
-		displayInvited(data.newGuest.guest_name);
-		$('#members').append(" " + data.newGuest.guest_name);
-		$('#invite_list option:selected').remove();
-	}).fail(function(){
-		console.log('error on creating new group chat');
-	});
-});
 
 $('#open_group_chat').click(function(){
     
     var chatname = $('#group_chat_list :selected').val();
     current_chatroom = chatname;
-    //client_socket.emit('open group chat',chatname);
-    $.ajax({
-		url: '/open-group-chat',
-		type: 'POST',
-		data: {chatname: chatname},
-		dataType: 'json'
-	}).done(function(data){
-		displayGroupMessages(data.group_messages, data.chatname);
-	}).fail(function(){
-		console.log('error on creating new group chat');
-	});
-
-	$.ajax({
-		url: '/get-members',
-		type: 'POST',
-		data: {chatname: current_chatroom},
-		dataType: 'json'
-	}).done(function(data){
-		displayGroupMembers(data.members);
-	}).fail(function(){
-		console.log('error on creating new group chat');
-	});
-
-	$.ajax({
-		url: '/get-invitelist',
-		type: 'POST',
-		data: {chatname: current_chatroom},
-		dataType: 'json'
-	}).done(function(data){
-		displayInviteList(data.invitelist);
-	}).fail(function(){
-		console.log('error on creating new group chat');
-	});
+    
+    var form = $("<form method='post', action='/open-group-chat'></form>");
+    var input_chatname = $("<input type='hidden', name='chatname'>");
+    var input_source = $("<input type='hidden', name='source_user'>");
+    
+    input_chatname.val(chatname);
+    input_source.val(source_user);
+    form.append(input_chatname);
+    form.append(input_source);
+    form.submit();
 });

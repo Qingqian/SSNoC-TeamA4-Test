@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	include navigationbar.jade
+ 
+	div.container
+		div.row
+			div.col-xs-12.col-sm-12.col-md-8.col-md-offset-2
+				div.panel.panel-info
+					div.panel-heading
+						h3.panel-title Invite List
+					div.panel-body
+						.row
+							.col-xs-12.col-md-10
+								select.form-control(name="options")#invite_list
+								br
+							.col-xs-12.col-md-2
+								form(action="/invite")
+									input.form-contro(type="button" value="Invite")#invite
+									
+			div.col-xs-12.col-sm-12.col-md-8.col-md-offset-2
+				div.panel.panel-primary
+					div.panel-heading
+						div.row
+							div.col-xs-4.col-sm-4.col-md-4
+								a.btn.btn-primary(href="/directory") 
+									span.glyphicon.glyphicon-arrow-left
+							div.col-xs-8.col-sm-8.col-md-8
+								h4#roomTitle
+								br
+								h7#members
+								br
+								h7#invited
+					div.panel-body
+						ul.media-list#group_messages
+					div.panel-footer
+						div.input-group
+							input.form-control#group_message_content(type="text" placeholder='Enter message...')
+							span.input-group-btn
+								button.btn.btn-primary#send_group_message_btn(type="button")
+									span.glyphicon.glyphicon-send(aria-hidden="true")
+			
+append footer
+	script(type="text/javascript").
+		var source_user = !{JSON.stringify(source)};
+		var chatname = !{JSON.stringify(chatname)};
+	script(src="../../js/single_group_chat.js")

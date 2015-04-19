@@ -53,11 +53,12 @@ module.exports = function(app, _, io, passport, online_users){
 	/********************* Group Chat *********************/
 	app.get('/group-chat', checkLogIn, groupChatManager.getGroupChatPage);
 	app.post('/new-group-chat', checkLogIn, groupChatManager.addNewGuest);
-	app.post('/new-group-message', checkLogIn, groupChatManager.addNewMessage);
 	app.get('/get-groupchat-list',checkLogIn,groupChatManager.getGroupChats);
-	app.post('/open-group-chat',checkLogIn, groupChatManager.getGroupMessages);
-	app.post('/invite', checkLogIn, groupChatManager.addNewGuest);
+	app.post('/open-group-chat',checkLogIn, groupChatManager.openGroupChatPage);
 	app.post('/get-members',checkLogIn, groupChatManager.getMembers);
+	app.post('/group-history', checkLogIn, groupChatManager.getGroupMessages);
+	app.post('/new-group-message', checkLogIn, groupChatManager.addNewMessage);
+	app.post('/invite', checkLogIn, groupChatManager.addNewGuest);
 	app.post('/get-invitelist',checkLogIn, groupChatManager.getInviteList);
 	/********************* Search Information *********************/
 	app.get('/search', checkLogIn, searchManager.getSearchPage);
