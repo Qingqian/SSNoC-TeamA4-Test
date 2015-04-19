@@ -6,9 +6,14 @@ block content
 	div.container
 		div.row
 			div.col-xs-12.col-sm-12.col-md-8.col-md-offset-2
-				div.panel.panel-info
+				div.panel.panel-primary
 					div.panel-heading
-						h3.panel-title Invite List
+						div.row
+							div.col-xs-4.col-sm-4.col-md-4
+								a.btn.btn-primary(href="/group-chat") 
+									span.glyphicon.glyphicon-arrow-left
+							div.col-xs-8.col-sm-8.col-md-8		
+								h3.panel-title Invite List
 					div.panel-body
 						.row
 							.col-xs-12.col-md-10
@@ -22,9 +27,6 @@ block content
 				div.panel.panel-primary
 					div.panel-heading
 						div.row
-							div.col-xs-4.col-sm-4.col-md-4
-								a.btn.btn-primary(href="/directory") 
-									span.glyphicon.glyphicon-arrow-left
 							div.col-xs-8.col-sm-8.col-md-8
 								h4#roomTitle
 								br
