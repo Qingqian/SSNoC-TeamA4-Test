@@ -5,7 +5,7 @@ module.exports = function(app, _, io, passport, online_users){
 	var announcementManager = require('./controllers/announcementManager')(_);
 	var searchManager = require('./controllers/searchManager')(_,online_users);
 	var groupChatManager = require('./controllers/guestManager')(_);
-
+	var performanceManager = require('./controllers/performanceManager')(_);
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
@@ -67,6 +67,11 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/search-public-message', checkLogIn, searchManager.searchPublicMessage);
 	app.post('/search-announcement', checkLogIn, searchManager.searchAnnouncement);
 	app.post('/search-private-message',checkLogIn, searchManager.searchPrivateMessage);
+	/********************* Monitoring Performance *********************/
+	app.get('/monitor-performance', checkLogIn, performanceManager.getPerformancePage);
+	app.post('/post-test-message', checkLogIn, performanceManager.postTestMessage);
+	app.get('/get-test-messages', checkLogIn, performanceManager.getTestMessages);
+	app.post('/performance-shutdown', checkLogIn, performanceManager.shutDownPerformance);
 
 	/******************* Debug ****************/
 	app.get('/cleardb', userManager.clearDB);

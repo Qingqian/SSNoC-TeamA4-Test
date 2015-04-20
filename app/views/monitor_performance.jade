@@ -1,0 +1,48 @@
+extends layout
+
+block content
+	include navigationbar.jade
+	div.container
+		div.alert.alert-danger(role="alert")#alert_bar
+		br
+		h3.text-center Monitor Performance
+		br
+		div.input-group
+			span.input-group-addon Test Duration
+			input.form-control(type="text" placeholder ="no more than 5 sec")#test_duration
+		br
+		div.container.row.col-lg-12.col-md-12.col-sm-12.col-xs-12.text-center
+			div.col-lg-6.col-md-6.col-sm-6.col-xs-6
+				button.btn.btn-success#btn_start
+					strong Start
+			div.col-lg-6.col-md-6.col-sm-6.col-xs-6
+				button.btn.btn-danger#btn-stop
+					strong Stop
+		br
+		br
+		div.text-center#spinner
+			label#spinner_text
+				strong Start Testing...
+			img(src="../../imgs/spinner.gif" alt ="Loading" label="Start Monitoring..." height=30)#img_spinner
+		hr
+		div.panel.panel-primary#test_result
+			div.panel-heading Application Performance Result
+			div.panel-body
+				table.table.text-center#result_table
+					thead
+						tr
+							td Total Posts
+							td Posts per Second
+							td Total Gets
+							td Gets per Second
+					tr
+						td
+							div#total_posts
+						td
+							div#post_per_sec
+						td
+							div#total_gets
+						td
+							div#get_per_sec
+append footer
+	script(src="../../js/performance.js")
