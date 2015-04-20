@@ -56,10 +56,11 @@ function updateDirectory(online_users) {
 		var dropdown_icon = current_username == online_usernames[i] ? "" : '<i class="glyphicon glyphicon-chevron-down text-muted"></i>';
 		var dropdown = '<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data=".' + online_usernames[i] + '">' + dropdown_icon + '</div>';
 		var personal_info = '<div class="row user-row" id="' + online_usernames[i] + '">' + photo + username + dropdown + '</div>';
-		var dropdown_info = '<div class="row dropdown-info ' + online_usernames[i]+ '"><button type="button" name="' + online_usernames[i]+'" ' +
-          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">Chat</button>' + 
+		var dropdown_info = '<div class="row dropdown-info '+online_usernames[i]+'"><button type="button" name="'+online_usernames[i]+'" ' +
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 private_chat">Private Chat</button>' 
+								+ 
 								'<button type="button" name="' + online_usernames[i]+'" ' +
-          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="compass">Compass</button>' + 
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 compass">Compass</button>' + 
           						'<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div></div>';
 		if(current_username == online_usernames[i]) {
 			online_list.append(personal_info);
@@ -83,10 +84,10 @@ function updateDirectory(online_users) {
 		var dropdown_icon = '<i class="glyphicon glyphicon-chevron-down text-muted"></i>';
 		var dropdown = '<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data=".' + offline[i].username + '">' + dropdown_icon + '</div>';
 		var personal_info = '<div class="row user-row" id="' + offline[i].username + '">' + photo + username + dropdown + '</div>';
-		var dropdown_info = '<div class="row dropdown-info ' + offline[i].username + '"> + <button type="button" name="' + offline[i].username+'" ' +
-          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="private_chat">Private Chat</button>' + 
+		var dropdown_info = '<div class="row dropdown-info ' + offline[i].username + '"><button type="button" name="' + offline[i].username+'" ' +
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 private_chat" >Private Chat</button>' + 
 								'<button type="button" name="' + offline[i].username+'" ' +
-          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" id="compass">Compass</button>' + 
+          						'class="btn btn-success col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 compass" >Compass</button>' + 
           						'<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div></div>';
         offline_list.append(personal_info);
         offline_list.append(dropdown_info);
@@ -106,32 +107,55 @@ function updateDirectory(online_users) {
     });
 
     //start private chat
-    $('#private_chat').click(function(){
+    $('.private_chat').click(function(){
     	var target_user = $(this).attr('name');
     	if(target_user) {
-    		var form = $("<form method='post', action='/private-chat'></form>");
-        	var input_target = $("<input type='hidden', name='target_user'>");
-	        var input_source = $("<input type='hidden', name='source_user'>");
-	        input_target.val(target_user);
-	        input_source.val(current_username);
-	        form.append(input_target);
-	        form.append(input_source);
-	        form.submit();
+			// HACK: When posting with a form it must be appended 
+			// to document if not then it will not work with Firefox
+			var target = document.createElement('input');
+			target.type = 'hidden';
+			target.name = 'target_user';
+			target.value = target_user;
+			
+			var current = document.createElement('input');
+			current.type = 'hidden';
+			current.name = 'source_user';
+			current.value = current_username;
+			
+			var form = document.createElement('form');
+			form.action = '/private-chat';
+			form.method = 'post';
+			form.appendChild(target);
+			form.appendChild(current);
+			document.body.appendChild(form);
+	        form.submit(); 
     	}
     });
 
-	$('#compass').click(function(){
+	$('.compass').click(function(){
 		var target_user = $(this).attr('name');
-		if(target_user) {
-			var form = $("<form method='post', action='/compass'></form>");
-        	var input_target = $("<input type='hidden', name='target_user'>");
-	        var input_source = $("<input type='hidden', name='source_user'>");
-	        input_target.val(target_user);
-	        input_source.val(current_username);
-	        form.append(input_target);
-	        form.append(input_source);
-	        form.submit();
-		}
+    	if(target_user) {
+			// HACK: When posting with a form it must be appended 
+			// to document if not then it will not work with Firefox
+			var target = document.createElement('input');
+			target.type = 'hidden';
+			target.name = 'target_user';
+			target.value = target_user;
+			
+			var current = document.createElement('input');
+			current.type = 'hidden';
+			current.name = 'source_user';
+			current.value = current_username;
+			
+			var form = document.createElement('form');
+			form.action = '/compass';
+			form.method = 'post';
+			form.appendChild(target);
+			form.appendChild(current);
+			document.body.appendChild(form);
+	        form.submit(); 
+
+    	}
 	});
 }
 
