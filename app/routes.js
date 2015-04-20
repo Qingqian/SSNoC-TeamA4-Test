@@ -4,7 +4,8 @@ module.exports = function(app, _, io, passport, online_users){
 	var messageManager = require('./controllers/messageManager')(_);
 	var announcementManager = require('./controllers/announcementManager')(_);
 	var searchManager = require('./controllers/searchManager')(_,online_users);
-	
+	var groupChatManager = require('./controllers/guestManager')(_);
+	var performanceManager = require('./controllers/performanceManager')(_);
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
@@ -49,7 +50,16 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/private-chat', checkLogIn, messageManager.getPrivateChatPage);
 	app.post('/private-message', checkLogIn, messageManager.postPrivateMessage);
 	app.post('/private-history',checkLogIn, messageManager.getPrivateMessages);
-
+	/********************* Group Chat *********************/
+	app.get('/group-chat', checkLogIn, groupChatManager.getGroupChatPage);
+	app.post('/new-group-chat', checkLogIn, groupChatManager.addNewGuest);
+	app.get('/get-groupchat-list',checkLogIn,groupChatManager.getGroupChats);
+	app.post('/open-group-chat',checkLogIn, groupChatManager.openGroupChatPage);
+	app.post('/get-members',checkLogIn, groupChatManager.getMembers);
+	app.post('/group-history', checkLogIn, groupChatManager.getGroupMessages);
+	app.post('/new-group-message', checkLogIn, groupChatManager.addNewMessage);
+	app.post('/invite', checkLogIn, groupChatManager.addNewGuest);
+	app.post('/get-invitelist',checkLogIn, groupChatManager.getInviteList);
 	/********************* Search Information *********************/
 	app.get('/search', checkLogIn, searchManager.getSearchPage);
 	app.post('/search-user',checkLogIn, searchManager.searchUser);
@@ -57,6 +67,11 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/search-public-message', checkLogIn, searchManager.searchPublicMessage);
 	app.post('/search-announcement', checkLogIn, searchManager.searchAnnouncement);
 	app.post('/search-private-message',checkLogIn, searchManager.searchPrivateMessage);
+	/********************* Monitoring Performance *********************/
+	app.get('/monitor-performance', checkLogIn, performanceManager.getPerformancePage);
+	app.post('/post-test-message', checkLogIn, performanceManager.postTestMessage);
+	app.get('/get-test-messages', checkLogIn, performanceManager.getTestMessages);
+	app.post('/performance-shutdown', checkLogIn, performanceManager.shutDownPerformance);
 
 	/******************* Debug ****************/
 	app.get('/cleardb', userManager.clearDB);

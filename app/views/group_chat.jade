@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container.row
+		h3.text-center Group Chat
+		br
+		div.col-xs-12.col-md-8.col-md-offset-2
+			div.panel.panel-primary
+				div.panel-heading 
+					h3.panel-title Chat room list you joined...
+				div.panel-body
+					.row
+						.col-xs-12.col-md-10
+							select.form-control(name="options")#group_chat_list
+							br
+						.col-xs-12.col-md-2
+								input.form-control(type="button" value="Open")#open_group_chat
+				div.panel-footer
+					div.input-group
+						input.form-control#new_group_chat(type="text", placeholder='Create a chat room...')
+						span.input-group-btn
+							button.btn.btn-primary#create_group_chat(type="button")
+								span.glyphicon.glyphicon-send(aria-hidden="true")
+							
+append footer
+	script(src="../../js/group_chat.js")
