@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		h3 Relative User Position
+		br
+		div.row
+			div#distance_info
+			br
+			br
+			br
+			br
+			br
+			br
+			br
+			br
+			//div#compass
+			script(type="text/javascript" src="../../js/jQueryRotate.js")
+			img(src="../imgs/arrow.jpg" id="compass")
+		
+append footer
+	script(type="text/javascript").
+		var source_user = !{JSON.stringify(source)};
+		var target_user = !{JSON.stringify(target)};
+	script(src="../../js/compass.js")
