@@ -37,10 +37,11 @@ function isInt(value) {
 }
 
 $('#btn_start').click(function(){
-	$('#total_posts').html(0);
-	$('#post_per_sec').html(0);
-	$('#total_gets').html(0);
-	$('#get_per_sec').html(0);
+	var loading_block = '<div class="text-center"><img src="../../imgs/spinner.gif" alt ="Calculating" label="Calculating..." height=30></div>';
+	$('#total_posts').html(loading_block);
+	$('#post_per_sec').html(loading_block);
+	$('#total_gets').html(loading_block);
+	$('#get_per_sec').html(loading_block);
 
 	test_duration = $('#test_duration').val();
 	if(!isInt(test_duration)) {

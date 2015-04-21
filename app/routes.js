@@ -6,6 +6,7 @@ module.exports = function(app, _, io, passport, online_users){
 	var searchManager = require('./controllers/searchManager')(_,online_users);
 	var groupChatManager = require('./controllers/guestManager')(_);
 	var performanceManager = require('./controllers/performanceManager')(_);
+	var memoryManager = require('./controllers/memoryManager')(_);
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
@@ -72,6 +73,10 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/post-test-message', checkLogIn, performanceManager.postTestMessage);
 	app.get('/get-test-messages', checkLogIn, performanceManager.getTestMessages);
 	app.post('/performance-shutdown', checkLogIn, performanceManager.shutDownPerformance);
+	/********************* Monitoring Memory *********************/
+	app.get('/monitor-memory', checkLogIn, memoryManager.getMemoryPage);
+	app.post('/start-memory',checkLogIn, memoryManager.startMemory);
+	app.get('/get-memory-usage',checkLogIn, memoryManager.getAllMemoryUsage);
 
 	/******************* Debug ****************/
 	app.get('/cleardb', userManager.clearDB);

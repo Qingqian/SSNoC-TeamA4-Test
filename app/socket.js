@@ -43,7 +43,14 @@ module.exports = function(_, io, online_users) {
 					io.sockets.emit(target_users[i],data);
 				}
 			}
-		});		
+		});	
+
+		socket.on('memory testing', function(data){
+			io.sockets.emit("not allowed testing",data);
+		});	
+		socket.on('stop memory testing', function(data){
+			io.sockets.emit("allowed testing",data);
+		});	
 
 	});
 }

@@ -1,0 +1,35 @@
+extends layout
+
+block content
+	include navigationbar.jade
+
+	div.container
+		div.alert.alert-danger(role="alert")#alert_bar
+		br
+		h3.text-center Monitor Performance
+		br
+		div.container.row.col-lg-12.col-md-12.col-sm-12.col-xs-12.text-center
+			div.col-lg-4.col-md-4.col-sm-4.col-xs-4
+				button.btn.btn-success#btn_start
+					strong Start
+			div.col-lg-4.col-md-4.col-sm-4.col-xs-4
+				button.btn.btn-danger#btn_stop
+					strong Stop
+			div.col-lg-4.col-md-4.col-sm-4.col-xs-4
+				button.btn.btn-info#btn_view
+					strong View
+		br
+		br
+		div.container.row.col-lg-12.col-md-12.col-sm-12.col-xs-12.text-center#spinner
+			label#spinner_text
+				strong Start Testing...
+			img(src="../../imgs/spinner.gif" alt ="Loading" label="Start Monitoring..." height=30)#img_spinner
+		hr
+		div.container.row.col-lg-12.col-md-12.col-sm-12.col-xs-12
+			div.panel.panel-primary#test_result
+				div.panel-heading Memory Result In Last Hour
+				div.panel-body
+					div.table-responsive#result_container
+					
+append footer
+	script(src="../../js/memory.js")
