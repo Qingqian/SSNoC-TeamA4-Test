@@ -46,10 +46,10 @@ module.exports = function(_, io, online_users) {
 		});	
 
 		socket.on('memory testing', function(data){
-			io.sockets.emit("not allowed testing",data);
+			io.sockets.emit("not allowed memory testing",data);
 		});	
 		socket.on('stop memory testing', function(data){
-			io.sockets.emit("allowed testing",data);
+			io.sockets.emit("allowed memory testing",data);
 		});	
 
 	});

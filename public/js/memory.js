@@ -14,7 +14,7 @@ client_socket.on('connect', function(){
 	});
 });
 
-client_socket.on('not allowed testing', function(data){
+client_socket.on('not allowed memory testing', function(data){
 	$("#btn_start").prop("disabled",true);
 	if(data.monitor != monitor) {
 		$('#alert_bar').html('Another monitor has already started testing on memory. Stop it first if you want to start a new one.');
@@ -22,7 +22,7 @@ client_socket.on('not allowed testing', function(data){
 	} 
 });
 
-client_socket.on('allowed testing', function(data){
+client_socket.on('allowed memory testing', function(data){
 	$('#spinner').hide();
 	$("#btn_start").prop("disabled",false);
 	if(on_test) {
