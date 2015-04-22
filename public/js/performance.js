@@ -74,9 +74,18 @@ $('#btn_start').click(function(){
 function post_request(finish_time) {
 	var current_time = new Date().getTime();
 	if(current_time >= finish_time) {
+		on_test = false;
 		finish_test(true);
-	} else if(post_request_count >=1000) {
+		return;
+	}
+	if(post_request_count >=1000) {
 		$('#alert_bar').html('Tests run out of memory');
+		$('#spinner').hide();
+		finish_test(false);
+		return;
+	}
+	if(!on_test) {
+		$('#alert_bar').html('Testing is stopped already.');
 		$('#spinner').hide();
 		finish_test(false);
 	} else {
@@ -105,7 +114,14 @@ function post_request(finish_time) {
 function get_request(finish_time) {
 	var current_time = new Date().getTime();
 	if(current_time >= finish_time) {
+		on_test = false;
 		finish_test(true);
+		return;
+	} 
+	if(!on_test) {
+		$('#alert_bar').html('Testing is stopped already.');
+		$('#spinner').hide();
+		finish_test(false);
 	} else {
 		//get request
 		$.ajax({
@@ -123,9 +139,8 @@ function get_request(finish_time) {
 
 function finish_test(finished) {
 	$('#spinner').hide();
-	if(on_test) {
+	
 		if(!finished) {
-			on_test = false;
 			temp_time = new Date().getTime();
 			real_test_time = temp_time-test_start_time;
 		} else {
@@ -143,24 +158,10 @@ function finish_test(finished) {
 		}).fail(function(){
 			console.log('error on shutting down performance db');
 		});
-	}
+	
 }
 
 $('#btn-stop').click(function(){
-	$('#spinner').hide();
-	if(on_test) {
-		on_test = false;
-		$('#total_posts').html("N/A");
-		$('#post_per_sec').html("N/A");
-		$('#total_gets').html("N/A");
-		$('#get_per_sec').html("N/A");
-		$.ajax({
-			url: '/performance-shutdown',
-			type: 'POST',
-			dataType: 'json'
-		}).done(function(data){
-		}).fail(function(){
-			console.log('error on shutting down performance db');
-		});
-	}
+	on_test = false;
+	finish_test(false);
 });
