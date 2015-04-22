@@ -37,17 +37,16 @@ function isInt(value) {
 }
 
 $('#btn_start').click(function(){
-	var loading_block = '<div class="text-center"><img src="../../imgs/spinner.gif" alt ="Calculating" label="Calculating..." height=30></div>';
-	$('#total_posts').html(loading_block);
-	$('#post_per_sec').html(loading_block);
-	$('#total_gets').html(loading_block);
-	$('#get_per_sec').html(loading_block);
-
 	test_duration = $('#test_duration').val();
 	if(!isInt(test_duration)) {
 		$('#alert_bar').show();
 		$('#alert_bar').html('Please enter a valid time duration');
 	} else {
+		var loading_block = '<div class="text-center"><img src="../../imgs/spinner.gif" alt ="Calculating" label="Calculating..." height=30></div>';
+		$('#total_posts').html(loading_block);
+		$('#post_per_sec').html(loading_block);
+		$('#total_gets').html(loading_block);
+		$('#get_per_sec').html(loading_block);
 		if(parseInt(test_duration) >5) {
 			$('#alert_bar').show();
 			$('#alert_bar').html('Due to test Duration Tolerance Rule, the system only tests the application performance for 5 seconds');
