@@ -7,9 +7,12 @@ module.exports = function(app, _, io, passport, online_users){
 	var groupChatManager = require('./controllers/guestManager')(_);
 	var performanceManager = require('./controllers/performanceManager')(_);
 	var memoryManager = require('./controllers/memoryManager')(_);
+	var adminManager = require('./controllers/adminManager')(_);
 	/******************* Controllers initialization end ****************/
 
 	/******************* routes start ****************/
+
+	/************************* Login ****************************/
 	app.get('/', userManager.getLogin);
 	app.get('/welcome', checkLogIn, userManager.postWelcomeMessage);
 	app.get('/login', userManager.getLogin);
@@ -18,15 +21,15 @@ module.exports = function(app, _, io, passport, online_users){
 		failureRedirect: '/',
 		failureFlash: true
 	}));
+	/************************* Signup ****************************/
 	app.get('/signup', userManager.getSignup);
 	app.post('/signup', passport.authenticate('local-signup',{
 		successRedirect: '/welcome',
 		failureRedirect: '/signup',
 		failureFlash: true
 	}));
+	/************************* logout ****************************/
 	app.get('/logout', checkLogIn, userManager.getLogout);
-	app.get('/users', checkLogIn, userManager.getAllUser);
-	app.get('/user', checkLogIn, userManager.getUser);
 	/************************* GPS ****************************/
 	app.get('/gps', checkLogIn, userManager.getGPSPage);
 	app.post('/gps', checkLogIn, userManager.changeGPSCoords);
@@ -34,6 +37,8 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/compass', checkLogIn, userManager.getCompassPage);
 	app.post('/compass-user', checkLogIn, userManager.getCompassUser);
 	/*********************** directory ************************/
+	app.get('/users', checkLogIn, userManager.getAllUser);
+	app.get('/user', checkLogIn, userManager.getUser);
 	app.get('/directory', checkLogIn, userManager.getDirectory);
 	/******************** Public Chat *************************/
 	app.get('/public-wall', checkLogIn, messageManager.getPublicChatPage);
@@ -73,15 +78,25 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/post-test-message', checkLogIn, performanceManager.postTestMessage);
 	app.get('/get-test-messages', checkLogIn, performanceManager.getTestMessages);
 	app.post('/performance-shutdown', checkLogIn, performanceManager.shutDownPerformance);
-	/********************* Monitoring Memory *********************/
+	/************************ Monitoring Memory *************************/
 	app.get('/monitor-memory', checkLogIn, memoryManager.getMemoryPage);
 	app.post('/start-memory',checkLogIn, memoryManager.startMemory);
 	app.get('/get-memory-usage',checkLogIn, memoryManager.getAllMemoryUsage);
+	/************************* Admin Profile ************************/
+	app.get('/admin-login', adminManager.adminLoginPage);
+	app.post('/admin-login', passport.authenticate('admin-login',{
+		successRedirect: '/directory',
+		failureRedirect: '/admin-login',
+		failureFlash: true
+	}));
+	app.get('/admin-user-profile',checkLogIn, adminManager.getAdminPage);
+	app.post('/user',checkLogIn, adminManager.getUserProfile);
+	app.post('/update-profile', checkLogIn, adminManager.updateUserProfile);
 
 	/******************* Debug ****************/
 	app.get('/cleardb', userManager.clearDB);
 
-	/******************* routes end ****************/
+	/******************* routes end *******************/
 	function checkLogIn(req, res, next) {
 		if (req.isAuthenticated())
 			return next();

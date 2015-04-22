@@ -90,4 +90,38 @@ module.exports = function(passport) {
   			});
   		}
   	));
+    /**********ADMIN LOGIN*************/
+    passport.use('admin-login', new LocalStrategy({
+        //override default
+        usernameField: 'admin_username',
+        passwordField: 'admin_password',
+        passReqToCallback :true
+
+        },
+        function(req, username, password, done) {
+            //async
+            process.nextTick(function() {
+                User.getAdmin(username, function(err, admin) {
+                    if(err) {
+                        console.log(err);
+                        return done(err);
+                    }
+                    if(!admin) {
+                        //TODO: This does not display
+                        console.log('no such user');
+                        return done(null,false, req.flash('loginMessage','No admin found.'));
+                    }
+                    admin.isValidPassword(password, function(isValid){
+                        if(isValid) {
+                            console.log('admin login successfully')
+                            return done(null,admin);
+                        } else {
+                            console.log('invalid pwd');
+                            return done(null, false, req.flash('loginMessage','wrong password'));
+                        }
+                    });
+                });
+            });
+        }
+    ));
 };

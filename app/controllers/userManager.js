@@ -1,4 +1,6 @@
 var User = require('../models/user');
+var Admin = require('../models/user');
+
 
 module.exports = function(_) {
 	return {
@@ -102,7 +104,8 @@ module.exports = function(_) {
 					res.json({err_message:null, success_message: "successfully updated gps coordinates"});
 				}
 			});
-		},	
+		},
+
 		/******************* routes start ****************/
 		clearDB : function(req, res) {
 			User.clearDB();
