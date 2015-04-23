@@ -72,13 +72,23 @@ $('#open_group_chat').click(function(){
     var chatname = $('#group_chat_list :selected').val();
     current_chatroom = chatname;
     
-    var form = $("<form method='post', action='/open-group-chat'></form>");
-    var input_chatname = $("<input type='hidden', name='chatname'>");
-    var input_source = $("<input type='hidden', name='source_user'>");
-    
-    input_chatname.val(chatname);
-    input_source.val(source_user);
-    form.append(input_chatname);
-    form.append(input_source);
-    form.submit();
+	// HACK: When posting with a form it must be appended 
+	// to document if not then it will not work with Firefox
+	var target = document.createElement('input');
+	target.type = 'hidden';
+	target.name = 'chatname';
+	target.value = chatname;
+			
+	var current = document.createElement('input');
+	current.type = 'hidden';
+	current.name = 'source_user';
+	current.value = source_user;
+			
+	var form = document.createElement('form');
+	form.action = '/open-group-chat';
+	form.method = 'post';
+	form.appendChild(target);
+	form.appendChild(current);
+	document.body.appendChild(form);
+	form.submit(); 
 });
