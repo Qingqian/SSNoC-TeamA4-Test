@@ -175,3 +175,13 @@ $('#send_group_message_btn').click(function(){
 		console.log('error on posting this message');
 	});
 });
+
+$('#map_link').click(function(){
+    var form = $("<form method='get', action='/map'></form>");
+
+    var input_source = $("<input type='hidden', name='source'>");
+    
+    input_source.val(source_user);
+    form.append(input_source);
+    form.submit();
+});

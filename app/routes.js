@@ -66,6 +66,8 @@ module.exports = function(app, _, io, passport, online_users){
 	app.post('/new-group-message', checkLogIn, groupChatManager.addNewMessage);
 	app.post('/invite', checkLogIn, groupChatManager.addNewGuest);
 	app.post('/get-invitelist',checkLogIn, groupChatManager.getInviteList);
+	/************************ Map ********************************/
+	app.get('/map', checkLogIn, groupChatManager.getMapPage);
 	/********************* Search Information *********************/
 	app.get('/search', checkLogIn, searchManager.getSearchPage);
 	app.post('/search-user',checkLogIn, searchManager.searchUser);

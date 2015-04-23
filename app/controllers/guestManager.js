@@ -86,7 +86,13 @@ module.exports = function(_, online_users) {
 		},
 		getGroupChatPage : function(req,res) {
 			var source_user = req.body.source_user;
-			res.render('group_chat', {souce_user: source_user});
+			res.render('group_chat', {source_user: source_user});
+		},
+
+
+		getMapPage : function(req,res) {
+			var source_user = req.body.source_user;
+			res.render('map', {source: source_user});
 		},
 		
 		openGroupChatPage : function(req,res) {
