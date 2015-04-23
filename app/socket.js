@@ -52,5 +52,11 @@ module.exports = function(_, io, online_users) {
 			io.sockets.emit("allowed memory testing",data);
 		});	
 
+		socket.on('update online users', function(data){
+			delete online_users[data.old_username];
+			online_users[data.new_username] = data.updated_user;
+			io.sockets.emit('change from admin',{online_users : online_users});
+		});
+
 	});
 }

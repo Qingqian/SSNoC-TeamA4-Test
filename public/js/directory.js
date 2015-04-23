@@ -3,16 +3,7 @@ var total_users;
 var current_username;
 
 client_socket.on("connect", function(){
-	//get all users in the system
-	$.ajax({
-		url: '/users',
-		type: 'GET',
-		dataType: 'json'
-	}).done(function(data){
-		total_users = data.total_users;
-	}).fail(function(){
-		console.log('error on getting all users in the system');
-	});
+	get_all_users(function(is_finished){});
 	//get current user
 	$.ajax({
 		url : '/user',
@@ -27,6 +18,20 @@ client_socket.on("connect", function(){
 	});
 });
 
+function get_all_users(callback) {
+	//get all users in the system
+	$.ajax({
+		url: '/users',
+		type: 'GET',
+		dataType: 'json'
+	}).done(function(data){
+		total_users = data.total_users;
+		callback(true);
+	}).fail(function(){
+		console.log('error on getting all users in the system');
+	});
+}
+
 client_socket.on("add connection", function(message){
 	updateDirectory(message.online_users);
 });
@@ -39,6 +44,14 @@ client_socket.on('change status', function(message){
 	updateDirectory(message.online_users);
 });
 
+client_socket.on('change from admin', function(message){
+	get_all_users(function(is_finished){
+		if(is_finished) {
+			updateDirectory(message.online_users);
+		}
+	});
+});
+
 
 function updateDirectory(online_users) {
 	var online_list = $("#online_users");
@@ -46,6 +59,16 @@ function updateDirectory(online_users) {
 	online_list.html('');
 	offline_list.html('');
 	var offline = [];
+	//inactive users are not displayed in the directory
+	var updated_online = {};
+	for(var username in online_users) {
+		var current_user = online_users[username];
+		if(current_user.account_status =="ACTIVE") {
+			updated_online[username] = current_user;
+		}
+
+	}
+	online_users = updated_online;
 	var online_usernames = Object.keys(online_users).sort();
 	//generate online html
 	for(var i=0;i<online_usernames.length;i++) {
@@ -72,7 +95,7 @@ function updateDirectory(online_users) {
 
 	//generate offline users
 	for(var i=0;i<total_users.length;i++) {
-		if(online_usernames.indexOf(total_users[i].username) == -1) {
+		if(online_usernames.indexOf(total_users[i].username) == -1 && total_users[i].account_status == "ACTIVE") {
 			offline.push(total_users[i]);
 		}
 	}
