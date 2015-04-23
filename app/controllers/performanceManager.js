@@ -1,9 +1,18 @@
 var TestMessage = require('../models/performance');
+var User = require('../models/user');
 
 module.exports = function(_) {
 	return {
 		getPerformancePage: function(req,res) {
-			res.render('monitor_performance');
+			var username = req.session.passport.user.username;
+			var usecase = "monitor_performance";
+			User.checkPrivilege(username, usecase, function(err, has_privilege){
+				if(err || !has_privilege) {
+					res.render('no_privilege');
+				} else if(has_privilege) {
+					res.render('monitor_performance');
+				}
+			});
 		},
 
 		postTestMessage : function(req,res) {

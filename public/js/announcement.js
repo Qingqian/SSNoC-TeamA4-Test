@@ -1,5 +1,7 @@
 var client_socket = io.connect();
-var user = "";
+var user;
+$('#alert_bar').hide();
+
 client_socket.on('connect', function(){
 	//get current user
 	$.ajax({
@@ -34,26 +36,31 @@ var announcement_html4 = '</div></div>';
 $('#post_announcement_btn').click(function(){
 	var announcement_title = $('#announcement_title').val();
 	var announcement_content = $('#announcement_content').val();
-	var currentdate = new Date();
-	var datetime = (currentdate.getMonth()+1)  + "/"
-				+ currentdate.getDate()  + "/" 
-				+ currentdate.getFullYear() + " @ "  
-				+ currentdate.getHours() + ":"  
-				+ currentdate.getMinutes() + ":" 
-				+ currentdate.getSeconds();
-	$('#announcement_title').val('');
-	$('#announcement_content').val('');
-	client_socket.emit('new announcement', {user: user, post_title: announcement_title, post_content: announcement_content, post_time: datetime});
-	$.ajax({
-		url: '/announcement',
-		type:'POST',
-		data: {post_title: announcement_title, post_content : announcement_content, post_time: datetime},
-		dataType:'json'
-	}).done(function(){
-	}).fail(function(){
-		console.log('error on posting announcement from client side');
-	});
-
+	if(!announcement_title || !announcement_content) {
+		$('#alert_bar').html('Please enter valid announcement title or content');
+		$('#alert_bar').show();
+	} else {
+		$('#alert_bar').hide();
+		var currentdate = new Date();
+		var datetime = (currentdate.getMonth()+1)  + "/"
+					+ currentdate.getDate()  + "/" 
+					+ currentdate.getFullYear() + " @ "  
+					+ currentdate.getHours() + ":"  
+					+ currentdate.getMinutes() + ":" 
+					+ currentdate.getSeconds();
+		$('#announcement_title').val('');
+		$('#announcement_content').val('');
+		client_socket.emit('new announcement', {user: user, post_title: announcement_title, post_content: announcement_content, post_time: datetime});
+		$.ajax({
+			url: '/announcement',
+			type:'POST',
+			data: {post_title: announcement_title, post_content : announcement_content, post_time: datetime},
+			dataType:'json'
+		}).done(function(){
+		}).fail(function(){
+			console.log('error on posting announcement from client side');
+		});
+	}
 });
 
 client_socket.on('new announcement',function(data){

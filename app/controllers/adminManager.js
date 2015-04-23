@@ -1,9 +1,18 @@
 var Admin = require('../models/user');
+var User = require('../models/user');
 
 module.exports = function(_) {
 	return {
 		getAdminPage : function(req,res) {
-			res.render('admin_profile');
+			var username = req.session.passport.user.username;
+			var usecase = "admin_profile";
+			User.checkPrivilege(username, usecase, function(err, has_privilege){
+				if(err || !has_privilege) {
+					res.render('no_privilege');
+				} else if(has_privilege) {
+					res.render('admin_profile');
+				}
+			});
 		},
 
 		adminLoginPage : function(req,res) {

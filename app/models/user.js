@@ -16,6 +16,8 @@ if (!exists) {
     console.log("Creating DB file.");
     fs.openSync(db_file, 'w');
 }
+//check privilege of a system user
+var profile_privilege = require('../../config/privilege');
 
 function User(username, password, user_status, change_status_time, lat, lon, gps_enabled, account_status, privilege_level) {
 	this.username = username;
@@ -338,6 +340,23 @@ User.updateProfile = function(username, password, account_status, privilege_leve
 			});
 		}
 	});
+}
+
+User.checkPrivilege = function(username, usecase, callback) {
+	var query = "SELECT * FROM user_info WHERE username=\"" + username + "\"";
+	checkTableExists(function(isSuccess){
+		if(isSuccess) {
+			db.get(query, function(err, row){
+				if (err){
+					callback(err,null);
+					return;
+				} else{
+					var has_privilege = profile_privilege.hasPrivilege(usecase, row.privilege_level);
+					callback(null,has_privilege);
+				}
+			});
+		}
+	});	
 }
 
 /******************* Debug ****************/

@@ -1,9 +1,18 @@
 var Memory = require('../models/memory');
+var User = require('../models/user');
 
 module.exports = function(_) {
 	return {
 		getMemoryPage: function(req,res) {
-			res.render('monitor_memory');
+			var username = req.session.passport.user.username;
+			var usecase = "monitor_memory";
+			User.checkPrivilege(username, usecase, function(err, has_privilege){
+				if(err || !has_privilege) {
+					res.render('no_privilege');
+				} else if(has_privilege) {
+					res.render('monitor_memory');
+				}
+			});
 		},
 
 		startMemory: function(req,res) {

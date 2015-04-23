@@ -1,9 +1,18 @@
 var Announcement = require('../models/announcement');
+var User = require('../models/user');
 
 module.exports = function(_) {
 	return {
 		getAnnouncementPage : function(req,res) {
-			res.render('announcement');
+			var username = req.session.passport.user.username;
+			var usecase = "post_announcement";
+			User.checkPrivilege(username, usecase, function(err, has_privilege){
+				if(err || !has_privilege) {
+					res.render('no_privilege');
+				} else if(has_privilege) {
+					res.render('announcement');
+				}
+			});
 		},
 
 		getAllAnnouncements : function(req,res) {
