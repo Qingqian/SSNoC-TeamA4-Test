@@ -228,6 +228,3 @@ Message.searchPrivateMessage = function(words, source_user, callback) {
 }
 
 module.exports = Message;
-
-
-
