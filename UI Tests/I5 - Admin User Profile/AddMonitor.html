@@ -4,26 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:3500/" />
-<title>AdminUserProfile</title>
+<title>AddMonitor</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">AdminUserProfile</td></tr>
+<tr><td rowspan="1" colspan="3">AddMonitor</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/clearDB</td>
-	<td></td>
-</tr>
-<tr>
-	<td>selectWindow</td>
-	<td>null</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
+	<td>/logout</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,23 +27,38 @@
 	<td>12345</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>12345</td>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
+	<td>//li[10]/a/strong</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td></td>
+	<td>1000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='user_directory']/div/div[3]/a/i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=privilege_selection</td>
+	<td>label=Monitor</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save_btn</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//li[11]/a/strong</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
 	<td></td>
 </tr>
 <tr>
@@ -67,48 +72,23 @@
 	<td>12345</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>12345</td>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
+	<td>//li[5]/a/strong</td>
 	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=h3.text-center</td>
+	<td>*Monitor*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//li[11]/a/strong</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=username</td>
-	<td>Vegeta</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=password</td>
-	<td>1234</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>1234</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Logout</td>
 	<td></td>
 </tr>
 

@@ -4,26 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:3500/" />
-<title>AdminUserProfile</title>
+<title>AddCord</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">AdminUserProfile</td></tr>
+<tr><td rowspan="1" colspan="3">AddCord</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/clearDB</td>
-	<td></td>
-</tr>
-<tr>
-	<td>selectWindow</td>
-	<td>null</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
+	<td>/logout</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,23 +27,38 @@
 	<td>12345</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>12345</td>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
+	<td>//li[10]/a/strong</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td></td>
+	<td>1000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='user_directory']/div[3]/div[3]/a/i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=privilege_selection</td>
+	<td>label=Coordinator</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save_btn</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//li[11]/a/strong</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
 	<td></td>
 </tr>
 <tr>
@@ -67,44 +72,39 @@
 	<td>12345</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>12345</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
+	<td>//input[@value='Login']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//li[11]/a/strong</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Direct to Signup Page</td>
+	<td>//li[7]/a/strong</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=username</td>
-	<td>Vegeta</td>
+	<td>id=announcement_title</td>
+	<td>yay</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=password</td>
-	<td>1234</td>
+	<td>id=announcement_content</td>
+	<td>rw3eqr</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password_confirmation</td>
-	<td>1234</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Register']</td>
+	<td>click</td>
+	<td>id=post_announcement_btn</td>
 	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.panel.panel-default &gt; div.panel-body</td>
+	<td>*rw3*</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td></td>
+	<td>1000</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
