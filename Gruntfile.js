@@ -22,5 +22,5 @@ module.exports = function (grunt) {
   });
   grunt.loadNpmTasks("grunt-express-server");
   grunt.loadNpmTasks("grunt-simple-mocha");
-  grunt.registerTask("default", ["express:test", "simplemocha : alls"]);
+  grunt.registerTask("default", ["express:test", "simplemocha : all"]);
 };
