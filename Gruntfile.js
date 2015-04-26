@@ -8,9 +8,19 @@ module.exports = function (grunt) {
           script: "app.js"
         }
       }
+    },
+    simplemocha : {
+        options : {
+            globals : ["should"],
+            timeout: 3000,
+            ignoreLeaks : false,
+            ui : "bdd",
+            reported : "xunit-file"
+        },
+        all : {src:["./tests/"]}
     }
   });
   grunt.loadNpmTasks("grunt-express-server");
   grunt.loadNpmTasks("grunt-simple-mocha");
-  grunt.registerTask("default", ["express:test"]);
+  grunt.registerTask("default", ["express:test", "simplemocha : alls"]);
 };
